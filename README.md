@@ -14,5 +14,5 @@ this is using Python to write, go to https://www.python.org/ to download and ins
 
 please run these command in the terminal/cmd:
 
-    pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple
+    pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple    #if you are chinese, run this
     pip install auto-py-to-exe
