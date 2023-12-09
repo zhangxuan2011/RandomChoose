@@ -7,3 +7,7 @@ the random number max is 45, min is 1.they are in these vars:
 
     minNum
     maxNum
+
+So if u want to change it, please edit these 2 vars.
+
+this is using https://www.python.org/ to write
