@@ -5,6 +5,7 @@ import sys
 from tkinter import messagebox as msgbox
 
 
+# 小彩蛋(就看你能否触发)
 args = sys.argv
 if len(args) == 2:
     if args[1] == "introduce":
@@ -20,23 +21,20 @@ root.title("随机抽选")
 # 设置图标
 root.iconphoto(True, tkinter.PhotoImage(file="icon.png"))
 
-screenWidth = root.winfo_screenwidth()  # 获取显示区域的宽度
-screenHeight = root.winfo_screenheight()  # 获取显示区域的高度
-width = 850  # 设定窗口宽度
-height = 500  # 设定窗口高度
+screenWidth = root.winfo_screenwidth()
+screenHeight = root.winfo_screenheight()
+width = 850
+height = 500
 left = (screenWidth - width) / 2
 top = (screenHeight - height) / 2
-
-# 宽度x高度+x偏移+y偏移
-# 在设定宽度和高度的基础上指定窗口相对于屏幕左上角的偏移位置
 root.geometry("%dx%d+%d+%d" % (width, height, left, top))
 
 # 背景设置
 #background = tkinter.Label(image=tkinter.PhotoImage(file="IMAGEFILE")).place(x=0, y=0)
 
 inftext = tkinter.StringVar()
-minNum = 1
-maxNum = 45
+minNum = 1    #要更改的最小值
+maxNum = 45   #要更改的最大值
 randomNum = kernel(minNum, maxNum)
 inftext.set(f"欢迎使用随机抽选")
 info = tkinter.Label(root, textvariable=inftext, font=("汉仪文黑-85W", 40))
