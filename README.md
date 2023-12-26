@@ -19,3 +19,4 @@
      pip install auto-py-to-exe
 
 后续会想办法在扩展，之后可从release下载安装包
+注意：icon.png一定要下载，否则报错！
