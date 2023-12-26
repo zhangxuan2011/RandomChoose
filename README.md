@@ -1,18 +1,18 @@
-# RandomChoose
-Welcome to use RandomChoose.
+# 随机选择
+欢迎使用随机选择。
 
-This program has been developed by zhangxuan and it started at 2023/11/1, this is the all version of it.
+本程序由zhangxuan开发，于2023年11月1日启动，此为完整版本。
 
-the random number max is 45, min is 1.they are in these vars:
+随机数最大值为 45，最小值为 1。它们位于以下变量中：
 
-    minNum
-    maxNum
+     minNum
+     maxNum
 
-So if u want to change it, please edit these 2 vars.
+因此，如果您想更改它，请编辑这 2 个变量。
 
-this is using Python to write, go to https://www.python.org/ to download and install it.
+这是用Python编写的，去https://www.python.org/下载并安装。
 
-please run these command in the terminal/cmd:
+请在终端/cmd 中运行这些命令：
 
-    pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple    #if you are chinese, run this
-    pip install auto-py-to-exe
+     pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple #可选运行
+     pip install auto-py-to-exe
