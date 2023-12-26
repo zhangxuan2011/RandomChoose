@@ -11,7 +11,7 @@
 因此，如果您想更改它，请编辑这 2 个变量。
 我们已在源代码中标注了他，你可以方便找出。
 
-这是用Python编写的，去https://www.python.org下载并安装。
+这是用Python编写的，去https://www.python.org    下载并安装。
 
 请在终端/cmd 中运行这些命令：
 
