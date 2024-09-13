@@ -14,6 +14,8 @@
     ·修了一些bug
 # Usage
 
+你可以用它来~~造福子孙后代~~帮老师抽学号
+
 要更改设置，请运行RandomChooseSettings.py文件并按照上面的提示设置
 
 最后运行Main.py即可.
