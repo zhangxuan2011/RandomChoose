@@ -14,7 +14,7 @@ This repository in branch above-v4.0 is the 4.0 version we developed, and the lo
 # Usage
 
 
-You can use it to ~~Make your son be "happy"~~help teacher to choose a number.
+You can use it to ~~Make your son be "happy"~~ help teacher to choose a number.
 
 To modify settings, please run RandomChooseSettings.py to modify settings,
 
