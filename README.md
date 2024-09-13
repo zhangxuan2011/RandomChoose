@@ -10,7 +10,9 @@ lower-v4.0是在v4.0以前的
 
 # Changelog
    ·新增外部导入
+
    ·使用PyQt6重写
+
    ·修了一些bug
 # Usage
 
