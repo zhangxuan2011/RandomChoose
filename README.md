@@ -9,11 +9,9 @@
 lower-v4.0是在v4.0以前的
 
 # Changelog
-   ·新增外部导入
-
-   ·使用PyQt6重写
-
-   ·修了一些bug
+    ·新增外部导入
+    ·使用PyQt6重写
+    ·修了一些bug
 # Usage
 
 要更改设置，请运行RandomChooseSettings.py文件并按照上面的提示设置
