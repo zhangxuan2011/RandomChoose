@@ -3,19 +3,13 @@
 
 本程序由zhangxuan开发，于2023年11月1日启动，此为完整版本。
 
-# =====v4.0=====
+# Introduce
 
+在仓库的above-v4.0是我们新开发的v4.0版本,lower-v4.0是以前的。
 
-在仓库的该分支是我们新开发的v4.0版本.
+要获取最新的版本，请去above-v4.0分支，
 
-# Changelog
-    ·新增外部导入
-    ·使用PyQt6重写
-    ·修了一些bug
-# Usage
+否则，去lower-v4.0分支。
 
-你可以用它来~~造福子孙后代~~ 帮老师抽学号
+关于该版本的信息请去查看每个分支的 README.md/README_ENGLISH.md
 
-要更改设置，请运行RandomChooseSettings.py文件并按照上面的提示设置
-
-最后运行Main.py即可.
