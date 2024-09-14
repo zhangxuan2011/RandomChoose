@@ -9,8 +9,8 @@ This repository in branch above-v4.0 is the 4.0 version we developed, and the lo
 
 # Changelog
     ·Added import from external place
-    ·Rewrite by PyQt6
-    ·Fixes Bugs
+    ·Rewrote by PyQt6
+    ·Fixed Bugs
 # Usage
 
 
