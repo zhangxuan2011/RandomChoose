@@ -10,7 +10,7 @@ This repository in branch above-v4.0 is the 4.0 version we developed, and this i
 To get the latest please go to the branch above-v4.0.
 
 # Changelog
-    ·Added Main Project called RandomChoose
+    ·Added GUI Page based on tkinter
 # Usage
 
 You can use it to ~~Make your son be "happy"~~ help teacher to choose a number.
