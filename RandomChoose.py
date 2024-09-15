@@ -40,14 +40,11 @@ root.geometry("%dx%d+%d+%d" % (width, height, left, top))
 inftext = tkinter.StringVar()
 minNum = 1
 maxNum = 45
-blacklist = [44,45]
 inftext.set("欢迎使用随机抽选")
 info = tkinter.Label(root, textvariable=inftext, font=("微软雅黑", 40))
 info.place(x=200, y=100)
 def Change():
     randomNum = kernel(minNum, maxNum)
-    if randomNum == 44:
-        Change()
     inftext.set(f"有请{randomNum}号回答问题！")
     
 def quitTk():
