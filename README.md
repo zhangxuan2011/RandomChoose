@@ -9,11 +9,11 @@
 
 这些是分支对应的版本：
 
-`withTkinter`: v1.0-v3.3;
+ - `withTkinter`: v1.0-v3.3;
 
-`withQt`: v4.0-v5.0
+ - `withQt`: v4.0-v5.0;
 
-`withUnity`: v5.0+
+ - `withUnity`: v5.0+
 
 关于每个版本的信息,请去查看每个分支的 README.md/README_ENGLISH.md
 
