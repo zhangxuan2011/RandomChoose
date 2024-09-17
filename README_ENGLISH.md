@@ -11,4 +11,4 @@ To get the latest,go to branch `above-v4.0`,
 
 Otherwise,go to `lower-v4.0`.
 
-For more info please check README.md/README_ENGLISH.md.
+For more info please check README.md/README_ENGLISH.md in every branch
