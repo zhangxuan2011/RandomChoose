@@ -5,11 +5,15 @@
 
 # Introduce
 
-在仓库的`above-v4.0`分支是我们新开发的v4.0版本,`lower-v4.0`是以前的。
+为了方便管理，我们把每个版本都放在了一个分支
 
-要获取最新的版本，请去`above-v4.0`分支，
+这些是分支对应的版本：
 
-否则，去`lower-v4.0`分支。
+`withTkinter`: v1.0-v3.3;
 
-关于每个版本的信息请去查看每个分支的 README.md/README_ENGLISH.md
+`withQt`: v4.0-v5.0
+
+`withUnity`: v5.0+
+
+关于每个版本的信息,请去查看每个分支的 README.md/README_ENGLISH.md
 
