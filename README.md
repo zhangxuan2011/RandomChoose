@@ -11,5 +11,5 @@
 
 否则，去`lower-v4.0`分支。
 
-关于该版本的信息请去查看每个分支的 README.md/README_ENGLISH.md
+关于每个版本的信息请去查看每个分支的 README.md/README_ENGLISH.md
 
