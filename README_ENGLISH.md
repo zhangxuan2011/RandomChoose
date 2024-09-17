@@ -5,10 +5,14 @@ This program has developed by zhangxuan, started at Nov.1,2023, this is the full
 
 # Introduce
 
-This repository in branch `above-v4.0` is the 4.0 version we developed, and the `lower-v4.0` is the before of the v4.0. 
+To manage easily, we've created some branches to manage.
 
-To get the latest,go to branch `above-v4.0`,
+These are the matching of the branch and version:
 
-Otherwise,go to `lower-v4.0`.
+ - `withTkinter`: v1.0-v3.3;
+
+ - `withQt`: v4.0-v5.0;
+
+ - `withUnity`: v5.0+
 
 For more info please check README.md/README_ENGLISH.md in every branch
