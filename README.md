@@ -13,7 +13,5 @@
 
  - `withQt`: v4.0-v5.0;
 
- - `withUnity`: v5.0+
-
 关于每个版本的信息,请去查看每个分支的 README.md/README_ENGLISH.md
 

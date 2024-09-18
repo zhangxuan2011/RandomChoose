@@ -13,6 +13,4 @@ These are the matching of the branch and version:
 
  - `withQt`: v4.0-v5.0;
 
- - `withUnity`: v5.0+
-
 For more info please check README.md/README_ENGLISH.md in every branch
