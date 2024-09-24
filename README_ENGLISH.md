@@ -14,7 +14,7 @@ To get the latest please go to the branch above-v4.0.
     ·Added import from external
 # Usage
 
-You can use it to ~~Make your son be "happy"~~ help teacher to choose a number.
+You can use it to: ~~Make your son be "happy"~~ help teacher to choose a number.
 
 To modify settings, please run RandomChooseSettings.py and as its tips,
 
