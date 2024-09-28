@@ -1,5 +1,6 @@
 import tkinter
 from tkinter import messagebox as msgbox
+import json
 
 
 # 创建窗口
@@ -25,14 +26,16 @@ maxNum = tkinter.Entry(root, width=25)
 maxNum.place(x=120, y=60)
 maxNumText = tkinter.Label(root, text='请输入最大值：', font=('微软雅黑', 12)).place(x=0, y=60)
 applyopt_exception = None
+blacklist = list()
 
 #定义变量
 def applyopt():
     try:
-        f = open("settings.py", "w")
-        minNumValue = minNum.get()
-        maxNumValue = maxNum.get()
-        f.write(f"class settings:\n\tminNumber = {minNumValue}\n\tmaxNumber = {maxNumValue}")
+        minNumValue = int(minNum.get())
+        maxNumValue = int(maxNum.get())
+        data = {'minNum': minNumValue, 'maxNum': maxNumValue, 'blacklist': blacklist}
+        with open("settings.json", "w") as f:
+        	json.dump(data, f, indent=4)
     except Exception as applyopt_exception:
         msgbox.showerror("错误", f"在试图将配置写入settings.py时发生了一些问题\n错误代码:{applyopt_exception}")
     else:

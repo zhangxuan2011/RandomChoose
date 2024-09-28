@@ -12,6 +12,7 @@ from PyQt6.QtWidgets import QApplication, QPushButton, QLabel, QMessageBox
 import sys
 from random import choice as kernel
 from PyQt6 import uic
+import json
 
 
 # 1.正片开始!
@@ -45,14 +46,19 @@ onceagain: QPushButton = ui.onceagain
 info: QLabel = ui.info
 timeandroundtips: QLabel = ui.timeandroundtips
 
-minNum = settings.settings.minNumber
-maxNum = settings.settings.maxNumber
+# Init
+with open('settings.json', 'r') as file:
+	data = json.load(file)
+minNum = data['minNum']
+maxNum = data['maxNum']
+blacklist = data['blacklist']
 numlist = list()
 randomNum = None
 times = 0
 rounds = 0
 timeandround = f"你一共抽了{times}次,{rounds}轮\n注意:每{maxNum - minNum + 1}次为一轮"
 inftext = "欢迎使用随机抽选"
+
 
 # Generate NumList
 for i in range(minNum, maxNum + 1):
@@ -72,6 +78,9 @@ def Change():
     global maxNum
     global inftext
     global timeandround
+    global blacklist
+    for k in blacklist:
+    	numlist.remove(k)
     randomNum = kernel(numlist)
     inftext = f'选中了:{randomNum}号'
     info.setText(inftext)

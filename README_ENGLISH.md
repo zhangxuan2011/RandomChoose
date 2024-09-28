@@ -3,13 +3,13 @@ Welcome to use RandomChoose.
 
 This program has developed by zhangxuan, started at Nov.1,2023, this is the full version.
 
-# =====v4.0=====
+# =====v4.1=====
 
-This repository in branch above-v4.0 is the 4.0 version we developed, and the lower-v4.0 is the before of the v4.0. 
+This repository in branch above-v4.0 is the 4.0+ version we developed, and the lower-v4.0 is the before of the v4.0. 
 
 # Changelog
-    ·Rewrote by PyQt6
-    ·Fixed Bugs
+ - Import data by json
+ - Added something good(check by yourself)
 # Usage
 
 
