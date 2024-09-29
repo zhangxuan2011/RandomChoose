@@ -61,7 +61,7 @@ inftext = "欢迎使用随机抽选"
 for i in range(minNum, maxNum + 1):
     numlist.append(i)
 for k in blacklist:
-	numlist.remove(k)
+    numlist.remove(k)
 
 #Func set
 info.setText(inftext)
