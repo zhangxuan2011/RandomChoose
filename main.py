@@ -32,9 +32,7 @@ def FileExist(filename):
 def settingsnotfound():
     QMessageBox.critical(None, "错误", "找不到RandomChoose的配置文件\n请前往\"随机抽选设置\"进行设置", buttons=QMessageBox.StandardButton.Ok)
 
-if FileExist('settings.py'):
-    import settings
-else:
+if not FileExist('settings.json'):
     settingsnotfound()
     quit()
 
@@ -59,10 +57,11 @@ rounds = 0
 timeandround = f"你一共抽了{times}次,{rounds}轮\n注意:每{maxNum - minNum + 1}次为一轮"
 inftext = "欢迎使用随机抽选"
 
-
 # Generate NumList
 for i in range(minNum, maxNum + 1):
     numlist.append(i)
+for k in blacklist:
+	numlist.remove(k)
 
 #Func set
 info.setText(inftext)
@@ -79,8 +78,6 @@ def Change():
     global inftext
     global timeandround
     global blacklist
-    for k in blacklist:
-    	numlist.remove(k)
     randomNum = kernel(numlist)
     inftext = f'选中了:{randomNum}号'
     info.setText(inftext)
