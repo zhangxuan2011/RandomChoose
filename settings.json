@@ -1,5 +1,9 @@
 {
-    "minNum": 1,
-    "maxNum": 145,
-    "blacklist": []
+    "basic": {
+        "minNum": 1,
+        "maxNum": 52
+    },
+    "optional": {
+        "blacklist": []
+    }
 }

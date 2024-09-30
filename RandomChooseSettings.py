@@ -33,7 +33,9 @@ def applyopt():
     try:
         minNumValue = int(minNum.get())
         maxNumValue = int(maxNum.get())
-        data = {'minNum': minNumValue, 'maxNum': maxNumValue, 'blacklist': blacklist}
+        basedata = {'minNum': minNumValue, 'maxNum': maxNumValue}
+        optionaldata = {'blacklist': blacklist}
+        data = {"basic":basedata, "optional":optionaldata}
         with open("settings.json", "w") as f:
         	json.dump(data, f, indent=4)
     except Exception as applyopt_exception:

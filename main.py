@@ -8,10 +8,10 @@ Written By zhangxuan, MDTeam Corp.
 """
 
 # 导入模块
-from PyQt6.QtWidgets import QApplication, QPushButton, QLabel, QMessageBox
+from qtpy.QtWidgets import QApplication, QPushButton, QLabel, QMessageBox
 import sys
 from random import choice as kernel
-from PyQt6 import uic
+from qtpy import uic
 import json
 
 
@@ -47,9 +47,9 @@ timeandroundtips: QLabel = ui.timeandroundtips
 # Init
 with open('settings.json', 'r') as file:
 	data = json.load(file)
-minNum = data['minNum']
-maxNum = data['maxNum']
-blacklist = data['blacklist']
+minNum = data['basic']['minNum']
+maxNum = data['basic']['maxNum']
+blacklist = data['optional']['blacklist']
 numlist = list()
 randomNum = None
 times = 0
