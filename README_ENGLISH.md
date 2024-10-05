@@ -16,7 +16,7 @@ The branch in this repository is the new of v4.0+ we developed
 You can use it to: ~~Make your sons be "happy"~~ help teacher to choose a number.
 
 To modify settings, please run `RandomChooseSettings.py`
-` to modify settings,
+to modify settings,
 
 To modify **Secret** settings, modify `optional` project in `config.json`,
 
