@@ -10,7 +10,7 @@ Written By zhangxuan, MDTeam Corp.
 # 导入模块
 from qtpy.QtWidgets import QApplication, QPushButton, QLabel, QMessageBox
 import sys
-from random import choice as kernel
+from random import choice, randint
 from qtpy import uic
 import json
 
@@ -32,7 +32,7 @@ def FileExist(filename):
 def settingsnotfound():
     QMessageBox.critical(None, "错误", "找不到RandomChoose的配置文件\n请前往\"随机抽选设置\"进行设置", buttons=QMessageBox.StandardButton.Ok)
 
-if not FileExist('settings.json'):
+if not FileExist('config.json'):
     settingsnotfound()
     quit()
 
@@ -45,17 +45,19 @@ info: QLabel = ui.info
 timeandroundtips: QLabel = ui.timeandroundtips
 
 # Init
-with open('settings.json', 'r') as file:
+with open('config.json', 'r') as file:
 	data = json.load(file)
 minNum = data['basic']['minNum']
 maxNum = data['basic']['maxNum']
 blacklist = data['optional']['blacklist']
+chooseMode = data['optional']['chooseMode']
 numlist = list()
 randomNum = None
 times = 0
 rounds = 0
 timeandround = f"你一共抽了{times}次,{rounds}轮\n注意:每{maxNum - minNum + 1}次为一轮"
 inftext = "欢迎使用随机抽选"
+
 
 # Generate NumList
 for i in range(minNum, maxNum + 1):
@@ -78,12 +80,16 @@ def Change():
     global inftext
     global timeandround
     global blacklist
-    randomNum = kernel(numlist)
-    inftext = f'选中了:{randomNum}号'
+    global chooseMode
+    if chooseMode == 'listDel':
+    	randomNum = choice(numlist)
+    	inftext = f'选中了:{randomNum}号'
+    	times += 1
+    	print(f"[RandomChoose] Debug : Now numlist={numlist}, times={times},rounds={rounds}")  # Debug message
+    elif chooseMode == 'classic':
+    	randomNum = randint(minNum, maxNum)
+    	inftext = f'选中了:{randomNum}号'
     info.setText(inftext)
-    numlist.remove(randomNum)
-    print(f"[RandomChoose] Debug : Now numlist={numlist}, times={times},rounds={rounds}")  # Debug message
-    times += 1
     timeandround = f"你一共抽了{times}次,{rounds}轮\n注意:每{maxNum}次为一轮"
     timeandroundtips.setText(timeandround)
     if len(numlist) == 0:

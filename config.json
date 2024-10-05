@@ -4,6 +4,7 @@
         "maxNum": 52
     },
     "optional": {
-        "blacklist": []
+        "blacklist": [],
+        "chooseMode": "classic"
     }
 }
