@@ -5,6 +5,6 @@
     },
     "optional": {
         "blacklist": [],
-        "chooseMode": "classic"
+        "chooseMode": "listDel"
     }
 }

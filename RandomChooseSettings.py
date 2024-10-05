@@ -33,10 +33,11 @@ def applyopt():
     try:
         minNumValue = int(minNum.get())
         maxNumValue = int(maxNum.get())
+        chooseMode = "listDel"
         basedata = {'minNum': minNumValue, 'maxNum': maxNumValue}
-        optionaldata = {'blacklist': blacklist}
+        optionaldata = {'blacklist': blacklist, 'chooseMode': chooseMode}
         data = {"basic":basedata, "optional":optionaldata}
-        with open("settings.json", "w") as f:
+        with open("config.json", "w") as f:
         	json.dump(data, f, indent=4)
     except Exception as applyopt_exception:
         msgbox.showerror("错误", f"在试图将配置写入settings.py时发生了一些问题\n错误代码:{applyopt_exception}")
