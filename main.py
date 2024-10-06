@@ -8,10 +8,10 @@ Written By zhangxuan, MDTeam Corp.
 """
 
 # 导入模块
-from PyQt6.QtWidgets import QApplication, QPushButton, QLabel, QMessageBox
+from qtpy.QtWidgets import QApplication, QPushButton, QLabel, QMessageBox
 import sys
 from random import choice, randint
-from PyQt6 import uic
+from qtpy import uic
 import json
 
 
@@ -89,6 +89,8 @@ def Change():
     elif chooseMode == 'classic':
     	randomNum = randint(minNum, maxNum)
     	inftext = f'选中了:{randomNum}号'
+    else:
+    	QMessageBox.critical(None, 'Error while starting choose', 'Got an exception: In config.json/optional/chooseMode,\n\nError:invaild chooseMode and only support "classic" and "listDel".\n\nAsk developers for more information.')
     info.setText(inftext)
     timeandround = f"你一共抽了{times}次,{rounds}轮\n注意:每{maxNum}次为一轮"
     timeandroundtips.setText(timeandround)

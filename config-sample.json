@@ -1,0 +1,10 @@
+{
+    "basic": {
+        "minNum": 1,
+        "maxNum": 52
+    },
+    "optional": {
+        "blacklist": [],
+        "chooseMode": "listDel"
+    }
+}
