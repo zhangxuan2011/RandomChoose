@@ -8,10 +8,10 @@ Written By zhangxuan, MDTeam Corp.
 """
 
 # 导入模块
-from PyQt6.QtWidgets import QApplication, QPushButton, QLabel, QMessageBox
+from qtpy.QtWidgets import QApplication, QWidget, QPushButton, QLabel, QMessageBox
 import sys
 from random import choice, randint
-from PyQt6 import uic
+from qtpy import uic
 import json
 
 
@@ -43,6 +43,8 @@ ui.show()
 onceagain: QPushButton = ui.onceagain
 info: QLabel = ui.info
 timeandroundtips: QLabel = ui.timeandroundtips
+secret: QPushButton = ui.surprice
+
 
 # Init
 with open('config.json', 'r') as file:
@@ -97,10 +99,13 @@ def Change():
         # Re-Generate numlist
         for j in range(minNum, maxNum + 1):
             numlist.append(j)
+def surprice():
+	QMessageBox.information(None, '好东西 - 作者与43号的对话','某一天美好的上午......\n\n43号:嗨，[作者名]\n作者:干嘛？\n43号:你快点把我概率调成0\n作者:你觉得我会搞吗？\n43号:行!等着!我跟你没完!!!!!\n\n第二天,作者把这个东西写到了程序里面')
 
 
-# 定义OnceAgain按钮被点击后的发生事件
+# 定义按钮被点击后的发生事件
 onceagain.clicked.connect(Change)
+secret.clicked.connect(surprice)
 
 # 进入事件循环
 sys.exit(app.exec())
