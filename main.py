@@ -11,7 +11,7 @@ Written By zhangxuan, MDTeam Corp.
 from PyQt6.QtWidgets import QApplication, QPushButton, QLabel, QMessageBox
 import sys
 from random import choice, randint
-from qtpy import uic
+from PyQt6 import uic
 import json
 
 
