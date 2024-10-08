@@ -55,9 +55,14 @@ numlist = list()
 randomNum = None
 times = 0
 rounds = 0
-timeandround = f"你一共抽了{times}次,{rounds}轮\n注意:每{maxNum - minNum + 1}次为一轮"
+timeandround = None
 inftext = "欢迎使用随机抽选"
 
+# Do timeandroind
+if chooseMode == 'listDel':
+	timeandround = f"你一共抽了{times}次,{rounds}轮\n注意:每{maxNum - minNum + 1}次为一轮"
+else:
+	timeandround = f'你一共抽了{times}次\n注:这是经典抽选方式'
 
 # Generate NumList
 for i in range(minNum, maxNum + 1):
@@ -69,7 +74,7 @@ for k in blacklist:
 info.setText(inftext)
 timeandroundtips.setText(timeandround)
 
-# Defind Change:
+# Defind Func Change:
 def Change():
     # 声明变量
     global times
@@ -85,6 +90,8 @@ def Change():
     	randomNum = choice(numlist)
     	inftext = f'选中了:{randomNum}号'
     	times += 1
+    	numlist.remove(randomNum)
+    	timeandround = f"你一共抽了{times}次,{rounds}轮\n注意:每{maxNum}次为一轮"
     	print(f"[RandomChoose] Debug : Now numlist={numlist}, times={times},rounds={rounds}")  # Debug message
     elif chooseMode == 'classic':
     	randomNum = randint(minNum, maxNum)
@@ -92,7 +99,7 @@ def Change():
     else:
     	QMessageBox.critical(None, 'Error while starting choose', 'Got an exception: In config.json/optional/chooseMode,\n\nError:invaild chooseMode and only support "classic" and "listDel".\n\nAsk developers for more information.')
     info.setText(inftext)
-    timeandround = f"你一共抽了{times}次,{rounds}轮\n注意:每{maxNum}次为一轮"
+    
     timeandroundtips.setText(timeandround)
     if len(numlist) == 0:
         rounds += 1

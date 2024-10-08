@@ -10,7 +10,7 @@ The branch in this repository is the new of v4.0+ we developed
 # Changelog
  - Added the choose mode at v3.0-,
  - Changed the filename of config file
- - Fixed some bigs 
+ - Fixed some bugs 
 # Usage
 
 You can use it to: ~~Make your sons be "happy"~~ help teacher to choose a number.
