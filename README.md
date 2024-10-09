@@ -17,6 +17,6 @@
 
 要更改设置，请运行`RandomChooseSettings.py`文件并按照上面的提示设置,
 
-如要更改**隐藏**的设置，请去看看`config.json`的所有optional的项目,
+如要更改**隐藏**的设置，请去看看`config.json`的所有`optional`的项目,
 
 最后运行`main.py`即可.
