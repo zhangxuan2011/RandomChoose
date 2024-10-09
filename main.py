@@ -95,6 +95,8 @@ def Change():
     	print(f"[RandomChoose] Debug : Now numlist={numlist}, times={times},rounds={rounds}")  # Debug message
     elif chooseMode == 'classic':
     	randomNum = randint(minNum, maxNum)
+    	times += 1
+    	timeandround = f'你一共抽了{times}次\n注:这是经典抽选方式'
     	inftext = f'选中了:{randomNum}号'
     else:
     	QMessageBox.critical(None, 'Error while starting choose', 'Got an exception: In config.json/optional/chooseMode,\n\nError:invaild chooseMode and only support "classic" and "listDel".\n\nAsk developers for more information.')
