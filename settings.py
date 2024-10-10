@@ -1,7 +1,7 @@
 import sys
 import json
-from qtpy.QtWidgets import QApplication, QMainWindow, QMessageBox, QPushButton
-from qtpy import uic
+from PyQt6.QtWidgets import QApplication, QMainWindow, QMessageBox, QPushButton
+from PyQt6 import uic
 
 
 app = QApplication(sys.argv)
