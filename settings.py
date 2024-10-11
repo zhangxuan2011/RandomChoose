@@ -9,14 +9,17 @@ ui = uic.loadUi("./ui/settings.ui")
 ui.show()
 
 applyButton: QPushButton = ui.applyButton
+blacklist = list()
+nickname = list()
+enableShowNickname = False
 
 def applyopt():
     try:
         minNumValue = ui.minNum.value()
         maxNumValue = ui.maxNum.value()
         chooseMode = "listDel"
-        basedata = {'minNum': minNumValue, 'maxNum': maxNumValue}
-        optionaldata = {'blacklist': [], 'chooseMode': chooseMode}
+        basedata = {'minNum': minNumValue, 'maxNum': maxNumValue, 'chooseMode': chooseMode}
+        optionaldata = {'blacklist': blacklist, 'nickname': nickname, 'enableShowNickname': enableShowNickname}
         data = {"basic": basedata, "optional": optionaldata}
         with open("config.json", "w") as f:
             json.dump(data, f, indent=4)

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>MainWindow</class>
+ <class>settings</class>
  <widget class="QMainWindow" name="settings">
   <property name="geometry">
    <rect>
@@ -19,7 +19,7 @@
      <rect>
       <x>120</x>
       <y>20</y>
-      <width>250</width>
+      <width>61</width>
       <height>30</height>
      </rect>
     </property>
@@ -45,7 +45,7 @@
      <rect>
       <x>120</x>
       <y>60</y>
-      <width>250</width>
+      <width>61</width>
       <height>30</height>
      </rect>
     </property>
