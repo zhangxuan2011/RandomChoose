@@ -49,8 +49,10 @@ with open('config.json', 'r') as file:
 	data = json.load(file)
 minNum = data['basic']['minNum']
 maxNum = data['basic']['maxNum']
+chooseMode = data['basic']['chooseMode']
 blacklist = data['optional']['blacklist']
-chooseMode = data['optional']['chooseMode']
+nickname = data['optional']['nickname']
+enableNickname = ['optional']['enableShowNickname']
 numlist = list()
 randomNum = None
 times = 0
@@ -60,9 +62,9 @@ inftext = "欢迎使用随机抽选"
 
 # Do timeandroind
 if chooseMode == 'listDel':
-	timeandround = f"你一共抽了{times}次,{rounds}轮\n注意:每{maxNum - minNum + 1}次为一轮"
+    timeandround = f"你一共抽了{times}次,{rounds}轮\n注意:每{maxNum - minNum + 1}次为一轮"
 else:
-	timeandround = f'你一共抽了{times}次\n注:这是经典抽选方式'
+    timeandround = f'你一共抽了{times}次\n注:这是经典抽选方式'
 
 # Generate NumList
 for i in range(minNum, maxNum + 1):
