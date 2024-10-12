@@ -1,7 +1,7 @@
 import sys
 import json
-from PyQt6.QtWidgets import QApplication, QMainWindow, QMessageBox, QPushButton
-from PyQt6 import uic
+from qtpy.QtWidgets import QApplication, QMainWindow, QMessageBox, QPushButton
+from qtpy import uic
 
 
 app = QApplication(sys.argv)
@@ -11,7 +11,7 @@ ui.show()
 applyButton: QPushButton = ui.applyButton
 blacklist = list()
 nickname = list()
-enableShowNickname = False
+showMode = 'number'
 
 def applyopt():
     try:
@@ -19,7 +19,7 @@ def applyopt():
         maxNumValue = ui.maxNum.value()
         chooseMode = "listDel"
         basedata = {'minNum': minNumValue, 'maxNum': maxNumValue, 'chooseMode': chooseMode}
-        optionaldata = {'blacklist': blacklist, 'nickname': nickname, 'enableShowNickname': enableShowNickname}
+        optionaldata = {'blacklist': blacklist, 'nickname': nickname, 'showMode': showMode}
         data = {"basic": basedata, "optional": optionaldata}
         with open("config.json", "w") as f:
             json.dump(data, f, indent=4)

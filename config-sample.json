@@ -1,10 +1,12 @@
 {
     "basic": {
         "minNum": 1,
-        "maxNum": 52
+        "maxNum": 52,
+        "chooseMode": "listDel"
     },
     "optional": {
         "blacklist": [],
-        "chooseMode": "listDel"
+        "nickname": [],
+        "showMode": "number"
     }
 }

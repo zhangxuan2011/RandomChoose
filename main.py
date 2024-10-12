@@ -8,10 +8,10 @@ Written By zhangxuan, MDTeam Corp.
 """
 
 # 导入模块
-from PyQt6.QtWidgets import QApplication, QPushButton, QLabel, QMessageBox
+from qtpy.QtWidgets import QApplication, QPushButton, QLabel, QMessageBox
 import sys
 from random import choice, randint
-from PyQt6 import uic
+from qtpy import uic
 import json
 
 
@@ -52,7 +52,7 @@ maxNum = data['basic']['maxNum']
 chooseMode = data['basic']['chooseMode']
 blacklist = data['optional']['blacklist']
 nickname = data['optional']['nickname']
-enableNickname = data['optional']['enableShowNickname']
+showMode = data['optional']['showMode']
 numlist = list()
 randomNum = None
 times = 0
@@ -88,18 +88,39 @@ def Change():
     global timeandround
     global blacklist
     global chooseMode
+    global nnindex
+    global nicknameChosen
+    global showMode
     if chooseMode == 'listDel':
     	randomNum = choice(numlist)
-    	inftext = f'选中了:{randomNum}号'
+    	nnindex = randomNum - 1
+    	nicknameChosen = nickname[nnindex]
+    	if showMode == 'nickname':	
+    		inftext = f'选中了:{nicknameChosen}同学'
+    	elif showMode == 'both':
+    		inftext = f'选中了:{randomNum}号({nicknameChosen}同学)'
+    	elif showMode == 'number':
+    		inftext = f'选中了:{randomNum}号'
+    	else:
+    		QMessageBox.critical(None, 'Error while starting choose', 'Got an exception: In config.json/optional/showMode,\n\nError:invaild showMode and only support "number", "nickname" and "both".\n\nAsk developers for more information.')
     	times += 1
     	numlist.remove(randomNum)
     	timeandround = f"你一共抽了{times}次,{rounds}轮\n注意:每{maxNum}次为一轮"
     	print(f"[RandomChoose] Debug : Now numlist={numlist}, times={times},rounds={rounds}")  # Debug message
     elif chooseMode == 'classic':
     	randomNum = randint(minNum, maxNum)
+    	nnindex = randomNum - 1
+    	nicknameChosen = nickname[nnindex]
+    	if showMode == 'nickname':
+    		inftext = f'选中了:{nicknameChosen}同学'
+    	elif showMode == 'both':
+    		inftext = f'选中了:{randomNum}号({nicknameChosen}同学)'
+    	elif showMode == 'number':
+    		inftext = f'选中了:{randomNum}号'
+    	else:
+    		QMessageBox.critical(None, 'Error while starting choose', 'Got an exception: In config.json/optional/showMode,\n\nError:invaild showMode and only support "number", "nickname" and "both".\n\nAsk developers for more information.')
     	times += 1
     	timeandround = f'你一共抽了{times}次\n注:这是经典抽选方式'
-    	inftext = f'选中了:{randomNum}号'
     else:
     	QMessageBox.critical(None, 'Error while starting choose', 'Got an exception: In config.json/optional/chooseMode,\n\nError:invaild chooseMode and only support "classic" and "listDel".\n\nAsk developers for more information.')
     info.setText(inftext)
