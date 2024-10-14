@@ -10,7 +10,7 @@ Written By zhangxuan, MDTeam Corp.
 # 导入模块
 from PyQt6.QtWidgets import QApplication, QPushButton, QLabel, QMessageBox
 import sys
-from random import choice, randint
+from random import choice
 from PyQt6 import uic
 import json
 
@@ -91,40 +91,33 @@ def Change():
     global nnindex
     global nicknameChosen
     global showMode
+    randomNum = choice(numlist)
     if chooseMode == 'listDel':
-    	randomNum = choice(numlist)
-    	nnindex = randomNum - 1
-    	nicknameChosen = nickname[nnindex]
-    	if showMode == 'nickname':	
-    		inftext = f'选中了:{nicknameChosen}同学'
-    	elif showMode == 'both':
-    		inftext = f'选中了:{randomNum}号({nicknameChosen}同学)'
-    	elif showMode == 'number':
-    		inftext = f'选中了:{randomNum}号'
-    	else:
-    		QMessageBox.critical(None, 'Error while starting choose', 'Got an exception: In config.json/optional/showMode,\n\nError:invaild showMode and only support "number", "nickname" and "both".\n\nAsk developers for more information.')
     	times += 1
     	numlist.remove(randomNum)
     	timeandround = f"你一共抽了{times}次,{rounds}轮\n注意:每{maxNum}次为一轮"
     	print(f"[RandomChoose] Debug : Now numlist={numlist}, times={times},rounds={rounds}")  # Debug message
     elif chooseMode == 'classic':
-    	randomNum = randint(minNum, maxNum)
-    	nnindex = randomNum - 1
-    	nicknameChosen = nickname[nnindex]
-    	if showMode == 'nickname':
-    		inftext = f'选中了:{nicknameChosen}同学'
-    	elif showMode == 'both':
-    		inftext = f'选中了:{randomNum}号({nicknameChosen}同学)'
-    	elif showMode == 'number':
-    		inftext = f'选中了:{randomNum}号'
-    	else:
-    		QMessageBox.critical(None, 'Error while starting choose', 'Got an exception: In config.json/optional/showMode,\n\nError:invaild showMode and only support "number", "nickname" and "both".\n\nAsk developers for more information.')
-    	times += 1
-    	timeandround = f'你一共抽了{times}次\n注:这是经典抽选方式'
+        times += 1
+        timeandround = f'你一共抽了{times}次\n注:这是经典抽选方式'
     else:
     	QMessageBox.critical(None, 'Error while starting choose', 'Got an exception: In config.json/optional/chooseMode,\n\nError:invaild chooseMode and only support "classic" and "listDel".\n\nAsk developers for more information.')
+    if not len(nickname) == len(numlist):
+        result = QMessageBox.warning(None,"警告", "检测到显示名称长度与抽选范围长度不相同\n继续运行可能导致代码报错而意外退出\n仍要运行吗??", button=QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No)
+        if result == QMessageBox.StandardButton.No:
+            print("User choosed to quit to reset func")
+            sys.exit(0)
+    nnindex = randomNum - 1
+    nicknameChosen = nickname[nnindex]
+    if showMode == 'nickname':
+    	inftext = f'选中了:{nicknameChosen}同学'
+    elif showMode == 'both':
+    	inftext = f'选中了:{randomNum}号({nicknameChosen}同学)'
+    elif showMode == 'number':
+    	inftext = f'选中了:{randomNum}号'
+    else:
+    	QMessageBox.critical(None, 'Error while starting choose', 'Got an exception: In config.json/optional/showMode,\n\nError:invaild showMode and only support "number", "nickname" and "both".\n\nAsk developers for more information.')
     info.setText(inftext)
-    
     timeandroundtips.setText(timeandround)
     if len(numlist) == 0:
         rounds += 1
