@@ -13,8 +13,19 @@
     <height>500</height>
    </rect>
   </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
   <property name="windowTitle">
    <string>RandomChoose</string>
+  </property>
+  <property name="windowIcon">
+   <iconset>
+    <normalon>../icon.png</normalon>
+   </iconset>
   </property>
   <widget class="QPushButton" name="onceagain">
    <property name="geometry">
@@ -55,9 +66,9 @@
   <widget class="QLabel" name="info">
    <property name="geometry">
     <rect>
-     <x>200</x>
+     <x>110</x>
      <y>100</y>
-     <width>421</width>
+     <width>551</width>
      <height>81</height>
     </rect>
    </property>
@@ -70,7 +81,7 @@
     <string extracomment="maininfo"/>
    </property>
    <property name="alignment">
-    <set>Qt::AlignCenter</set>
+    <set>Qt::AlignmentFlag::AlignCenter</set>
    </property>
    <property name="wordWrap">
     <bool>true</bool>
@@ -94,7 +105,7 @@
     <string/>
    </property>
    <property name="alignment">
-    <set>Qt::AlignCenter</set>
+    <set>Qt::AlignmentFlag::AlignCenter</set>
    </property>
    <property name="wordWrap">
     <bool>true</bool>
