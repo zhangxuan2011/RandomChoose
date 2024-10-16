@@ -2,16 +2,28 @@ import sys
 import json
 from PyQt6.QtWidgets import QApplication, QMainWindow, QMessageBox, QPushButton
 from PyQt6 import uic
+import openpyxl
 
 
+# 创建UI
 app = QApplication(sys.argv)
 ui = uic.loadUi("./ui/settings.ui")
 ui.show()
 
+# 设置Object
 applyButton: QPushButton = ui.applyButton
 blacklist = list()
 nickname = list()
 showMode = 'number'
+
+# 打开 Excel 文件
+try:
+	workbook = openpyxl.load_workbook('nickname.xlsx')
+	sheet = workbook.active
+	for cell in sheet['B']:
+		nickname.append(cell.value)
+except:
+	pass
 
 def applyopt():
     try:
