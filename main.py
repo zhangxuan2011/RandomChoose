@@ -103,7 +103,7 @@ def Change():
     else:
     	QMessageBox.critical(None, 'Error while starting choose', 'Got an exception: In config.json/optional/chooseMode,\n\nError:invaild chooseMode and only support "classic" and "listDel".\n\nAsk developers for more information.')
     if not len(nickname) == len(numlist):
-        result = QMessageBox.warning(None,"警告", "检测到显示名称长度与抽选范围长度不相同\n继续运行可能导致代码报错而意外退出\n仍要运行吗??", button=QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No)
+        result = QMessageBox.warning(None,"警告", "检测到显示名称长度与抽选范围长度不相同\n继续运行可能导致代码报错而意外退出\n仍要运行吗??", buttons=QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No)
         if result == QMessageBox.StandardButton.No:
             print("User choosed to quit to reset func")
             sys.exit(0)
