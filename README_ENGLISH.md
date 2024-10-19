@@ -1,3 +1,4 @@
+Choose a language:[简体中文](https://github.com/zhangxuan2011/RandomChoose/tree/withQt/README.md) [English](https://github.com/zhangxuan2011/RandomChoose/tree/withQt/README_ENGLISH.md)
 # RandomChoose
 Welcome to use RandomChoose.
 
