@@ -58,6 +58,7 @@ randomNum = None
 times = 0
 rounds = 0
 timeandround = None
+total = maxNum - minNum + 1
 inftext = "欢迎使用随机抽选"
 
 # Do timeandroind
@@ -91,10 +92,15 @@ def Change():
     global nnindex
     global nicknameChosen
     global showMode
-    randomNum = choice(numlist)
+    global disableWarning
+    randomNum = choice(numlist) # 抽选
+    if len(numlist) != total:
+        disableWarning = False
+    else:
+        disableWarning = True
     if not len(nickname) == 0:
-        if not len(nickname) == len(numlist):
-            result = QMessageBox.warning(None,"警告", "检测到显示名称长度与抽选范围长度不相同\n继续运行可能导致代码报错而意外退出\n仍要运行吗??", buttons=QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No)
+        if not (len(nickname) == len(numlist)) and disableWarning == True:
+            result = QMessageBox.warning(None,"警告", "检测到显示名称长度与抽选范围长度不相同\n继续运行可能导致代码报错而意外退出(或者显示错位而引发尴尬)\n仍要运行吗??(点No会直接退出)\n(此消息每轮都会显示一次)", buttons=QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No)
             if result == QMessageBox.StandardButton.No:
                 print("User choosed to quit to reset func")
                 sys.exit(0)
@@ -108,11 +114,14 @@ def Change():
         timeandround = f'你一共抽了{times}次\n注:这是经典抽选方式'
     else:
     	QMessageBox.critical(None, 'Error while starting choose', 'Got an exception: In config.json/optional/chooseMode,\n\nError:invaild chooseMode and only support "classic" and "listDel".\n\nAsk developers for more information.')
+
     try:
         nnindex = randomNum - 1
         nicknameChosen = nickname[nnindex]
     except:
         pass
+
+    # 检查抽选方式
     if showMode == 'nickname':
     	inftext = f'选中了:{nicknameChosen}同学'
     elif showMode == 'both':
@@ -125,6 +134,7 @@ def Change():
     timeandroundtips.setText(timeandround)
     if len(numlist) == 0:
         rounds += 1
+        disableWarning = False
         # Re-Generate numlist
         for j in range(minNum, maxNum + 1):
             numlist.append(j)
