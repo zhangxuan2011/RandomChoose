@@ -64,7 +64,7 @@ inftext = "欢迎使用随机抽选"
 
 # Do timeandroind
 if chooseMode == 'listDel':
-    timeandround = f"你一共抽了{times}次,{rounds}轮\n注意:每{maxNum - minNum + 1}次为一轮"
+    timeandround = f"你一共抽了{times}次,{rounds}轮\n注意:每{total}次为一轮"
 else:
     timeandround = f'你一共抽了{times}次\n注:这是经典抽选方式'
 
@@ -105,18 +105,18 @@ def Change():
         disableWarning = True
     
     # 检查nickname和numlist(初始值)是否相同
-    if not len(nickname) == 0:
-        if not (len(nickname) == len(numlist)) and disableWarning == True:	# 防止出现一些不该出现的
+    if not len(nickname) == 0:  # 当numlist是空的时候直接忽略
+        if not (len(nickname) == len(numlist)) and (disableWarning == True):	# 防止出现一些不该出现的
             result = QMessageBox.warning(None,"警告", "检测到显示名称长度与抽选范围长度不相同\n继续运行可能导致代码报错而意外退出\n或者显示错位而引发尴尬\n仍要运行吗??(点No会直接退出)\n(此消息每轮都会显示一次)", buttons=QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No)
             if result == QMessageBox.StandardButton.No:
                 print("User choosed to quit to reset func")
-                sys.exit(0)
+                sys.exit(0) # 直接退
     
     # 检查chooseMode
     if chooseMode == 'listDel':
     	times += 1
     	numlist.remove(randomNum)
-    	timeandround = f"你一共抽了{times}次,{rounds}轮\n注意:每{maxNum}次为一轮"
+    	timeandround = f"你一共抽了{times}次,{rounds}轮\n注意:每{total}次为一轮"
     	print(f"[RandomChoose] Debug : Now numlist={numlist}, times={times},rounds={rounds}")  # Debug message
     elif chooseMode == 'classic':
         times += 1
@@ -124,7 +124,7 @@ def Change():
     else:
     	QMessageBox.critical(None, 'Error while starting choose', 'Got an exception: In config.json/optional/chooseMode,\n\nError:invaild chooseMode and only support "classic" and "listDel".\n\nAsk developers for more information.')
 	
-	# 防止一些奇怪的错误
+    # 防止一些奇怪的错误
     try:
         nnindex = randomNum - 1
         nicknameChosen = nickname[nnindex]
@@ -143,10 +143,11 @@ def Change():
     info.setText(inftext)
     timeandroundtips.setText(timeandround)
     
-    # 补充numlist
+    # 补充numlist(当numlist为空时)
     if len(numlist) == 0:
         rounds += 1
         disableWarning = False
+        
         # 重新生成numlist(当然chooseMode=classic时当我没说)
         for j in range(minNum, maxNum + 1):
             numlist.append(j)
