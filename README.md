@@ -4,12 +4,17 @@ Choose a language:[简体中文](https://github.com/zhangxuan2011/RandomChoose/t
 
 本程序由zhangxuan开发，于2023年11月1日启动。
 # =====v4.2.2=====
+
 在仓库的该分支是我们新开发的v4.0+版本.
+
 # Changelog
   - 添加了显示名字的功能
+  - 添加了excelb列导入名字的功能(nickname.xlsx)
   - 移除了旧版设置
   - 修复了一些bug
+
 # Usage
+
 你可以用它来: ~~"造福"子孙后代~~,帮老师抽学号
 
 要更改设置，请运行`settings.py`文件并按照上面的提示设置,
