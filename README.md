@@ -9,7 +9,7 @@ Choose a language:[简体中文](https://github.com/zhangxuan2011/RandomChoose/t
 
 # Changelog
   - 添加了显示名字的功能
-  - 添加了excelb列导入名字的功能(nickname.xlsx)
+  - 添加了excel中从b列导入名字的功能(nickname.xlsx)
   - 移除了旧版设置
   - 修复了一些bug
 
