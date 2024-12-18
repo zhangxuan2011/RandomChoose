@@ -114,15 +114,15 @@ def Change():
     
     # 检查chooseMode
     if chooseMode == 'listDel':
-    	times += 1
-    	numlist.remove(randomNum)
-    	timeandround = f"你一共抽了{times}次,{rounds}轮\n注意:每{total}次为一轮"
-    	print(f"[RandomChoose] Debug : Now numlist={numlist}, times={times},rounds={rounds}")  # Debug message
+        times += 1
+        numlist.remove(randomNum)
+        timeandround = f"你一共抽了{times}次,{rounds}轮\n注意:每{total}次为一轮"
+        print(f"[RandomChoose] Debug : Now numlist={numlist}, times={times},rounds={rounds}")  # Debug message
     elif chooseMode == 'classic':
         times += 1
         timeandround = f'你一共抽了{times}次\n注:这是经典抽选方式'
     else:
-    	QMessageBox.critical(None, 'Error while starting choose', 'Got an exception: In config.json/optional/chooseMode,\n\nError:invaild chooseMode and only support "classic" and "listDel".\n\nAsk developers for more information.')
+        QMessageBox.critical(None, 'Error while starting choose', 'Got an exception: In config.json/optional/chooseMode,\n\nError:invaild chooseMode and only support "classic" and "listDel".\n\nAsk developers for more information.')
 	
     # 防止一些奇怪的错误
     try:
@@ -133,13 +133,13 @@ def Change():
 
     # 检查抽选方式(nickname, both, number)
     if showMode == 'nickname':
-    	inftext = f'选中了:{nicknameChosen}同学'
+        inftext = f'选中了:{nicknameChosen}同学'
     elif showMode == 'both':
-    	inftext = f'选中了:{randomNum}号({nicknameChosen}同学)'
+        inftext = f'选中了:{randomNum}号({nicknameChosen}同学)'
     elif showMode == 'number':
-    	inftext = f'选中了:{randomNum}号'
+        inftext = f'选中了:{randomNum}号'
     else:
-    	QMessageBox.critical(None, 'Error while starting choose', 'Got an exception: In config.json/optional/showMode,\n\nError:invaild showMode and only support "number", "nickname" and "both".\n\nAsk developers for more information.')
+        QMessageBox.critical(None, 'Error while starting choose', 'Got an exception: In config.json/optional/showMode,\n\nError:invaild showMode and only support "number", "nickname" and "both".\n\nAsk developers for more information.')
     info.setText(inftext)
     timeandroundtips.setText(timeandround)
     
