@@ -18,9 +18,11 @@
 ## 从源码构建
 如果你想从源码构建本程序， 你需要安装:
  - Rust (Cargo);
+ - cargo-bundle 
 
 然后， 你可以使用以下命令构建本程序:
 ```bash
+cargo install cargo-bundle
 cargo build --release
 ```
 然后， 你可以在`target/release`中找到本程序。
