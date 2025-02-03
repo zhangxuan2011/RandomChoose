@@ -22,10 +22,7 @@ impl RandomChoose {
         let list = (1..=52).collect();
 
         // Return it
-        let app = Self {
-            value,
-            list,
-        };
+        let app = Self { value, list };
 
         (app, Task::none())
     }
