@@ -1,3 +1,4 @@
+#![windows_subsystem = "windows"]
 use iced::{
     widget::{button, column, container, row, text},
     window, Element, Font, Length, Size, Task,
@@ -45,24 +46,36 @@ impl RandomChoose {
 
     pub fn view(&self) -> Element<Message> {
         column![
-            container(text(format!("选中了: {}", self.value)).size(50))
+            container(text(format!("选中了: {}", self.value)).size(60))
                 .width(500)
                 .height(250)
                 .center_x(Length::Fill)
                 .center_y(Length::Fill),
             container(row![
                 container(
-                    button(text("抽选").size(25))
-                        .on_press(Message::Start)
-                        .width(Length::Fill)
-                        .height(Length::Fill)
+                    button(
+                        text("抽选")
+                            .size(35)
+                            .height(Length::Fill)
+                            .width(Length::Fill)
+                            .center()
+                    )
+                    .on_press(Message::Start)
+                    .width(Length::Fill)
+                    .height(Length::Fill)
                 )
                 .padding(30),
                 container(
-                    button(text("重置").size(25))
-                        .on_press(Message::Reset)
-                        .width(Length::Fill)
-                        .height(Length::Fill)
+                    button(
+                        text("重置")
+                            .size(35)
+                            .height(Length::Fill)
+                            .width(Length::Fill)
+                            .center()
+                    )
+                    .on_press(Message::Reset)
+                    .width(Length::Fill)
+                    .height(Length::Fill)
                 )
                 .padding(30),
             ])
@@ -98,7 +111,7 @@ fn main() -> iced::Result {
     .centered()
     .window(window::Settings {
         size: Size::new(850.0, 550.0),
-        min_size: Some(Size::new(850.0, 500.0)),
+        resizable: false,
         ..Default::default()
     })
     .default_font(Font::with_name("微软雅黑"))
