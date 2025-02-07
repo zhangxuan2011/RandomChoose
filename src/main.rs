@@ -1,7 +1,10 @@
 #![windows_subsystem = "windows"]
+
+// Import some modules
 use iced::{
     widget::{button, column, container, row, text},
-    window, Element, Font, Length, Size, Task,
+    window::{self, icon},
+    Element, Font, Length, Size, Task,
 }; // GUI
 use rand::prelude::*; // Random number generator
 
@@ -34,9 +37,7 @@ impl RandomChoose {
 
     pub fn update(&mut self, message: Message) -> Task<Message> {
         match message {
-            Message::Start => {
-                self.choose();
-            }
+            Message::Start => self.choose(),
             Message::Reset => {
                 self.value = 0;
             }
@@ -87,7 +88,6 @@ impl RandomChoose {
     }
 
     fn choose(&mut self) {
-        self.list = (1..=52).collect();
         // Now we've generated a random number list, we can shuffle it
         let mut rng = rand::rng();
         // 5000 times （5s）
@@ -96,8 +96,13 @@ impl RandomChoose {
 
         // Show it
         let index = rng.random_range(0..self.list.len());
-        self.value = self.list[index];
-        self.list.remove(index);
+        if !self.list.is_empty() {
+            self.value = self.list[index];
+            self.list.remove(index);
+        } else {    
+            self.list = (1..=52).collect(); // Reset the list
+        }
+        
     }
 }
 
@@ -108,12 +113,14 @@ fn main() -> iced::Result {
         RandomChoose::update,
         RandomChoose::view,
     )
-    .centered()
     .window(window::Settings {
         size: Size::new(850.0, 550.0),
+        position: window::Position::Centered,
         resizable: false,
+        icon: Some(icon::from_file("assets\\icon.ico").unwrap()),
         ..Default::default()
     })
     .default_font(Font::with_name("微软雅黑"))
+    .antialiasing(true)
     .run()
 }
