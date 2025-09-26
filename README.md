@@ -1,28 +1,16 @@
-# 随机抽选
-欢迎使用随机抽选。
+# Tauri + Vue + TypeScript
 
-本程序由zhangxuan开发，于2023年11月1日启动，此为完整版本。
+This template should help get you started developing with Vue 3 and TypeScript in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
 
-## 使用方法
+## Recommended IDE Setup
 
-1. 下载本程序
+- [VS Code](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) + [Tauri](https://marketplace.visualstudio.com/items?itemName=tauri-apps.tauri-vscode) + [rust-analyzer](https://marketplace.visualstudio.com/items?itemName=rust-lang.rust-analyzer)
 
-一般地， 你可以直接在本页面的Releases中下载最新版本。
+## Type Support For `.vue` Imports in TS
 
-2.设置
-打开“设置”， 根据你的需求， 选择你想要的选项。
+Since TypeScript cannot handle type information for `.vue` imports, they are shimmed to be a generic Vue component type by default. In most cases this is fine if you don't really care about component prop types outside of templates. However, if you wish to get actual prop types in `.vue` imports (for example to get props validation when using manual `h(...)` calls), you can enable Volar's Take Over mode by following these steps:
 
-3. 开始
-点击“开始”， 程序会自动开始随机抽选。  
+1. Run `Extensions: Show Built-in Extensions` from VS Code's command palette, look for `TypeScript and JavaScript Language Features`, then right click and select `Disable (Workspace)`. By default, Take Over mode will enable itself if the default TypeScript extension is disabled.
+2. Reload the VS Code window by running `Developer: Reload Window` from the command palette.
 
-## 从源码构建
-如果你想从源码构建本程序， 你需要安装:
- - Rust (Cargo);
- - cargo-bundle 
-
-然后， 你可以使用以下命令构建本程序:
-```bash
-cargo install cargo-bundle
-cargo build --release
-```
-然后， 你可以在`target/release`中找到本程序。
+You can learn more about Take Over mode [here](https://github.com/johnsoncodehk/volar/discussions/471).

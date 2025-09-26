@@ -1,0 +1,269 @@
+<script setup lang="ts">
+import { invoke } from "@tauri-apps/api/core";
+import { listen, UnlistenFn } from "@tauri-apps/api/event";
+import { ref } from "vue";
+
+interface EventPayload {
+  value: number;
+}
+
+let random_number = ref(0);
+let is_listening = ref(false);
+let is_invoked = ref(false);
+let min_num = ref(1);
+let max_num = ref(50);
+let unlisten_func: UnlistenFn | null = null;
+
+async function toggle_choose() {
+  // To avoid multiple invoking.
+  if (!is_listening.value) {
+    document.getElementById("choose_one")?.classList.add("choosing");
+    if (!is_invoked.value) {
+      await invoke("choose_number", {
+        min: min_num.value,
+        max: max_num.value,
+      });
+      is_invoked.value = true;
+    }
+
+    // Start listening...
+    unlisten_func = await listen<EventPayload>("random_number", (event) => {
+      const payload: number = event.payload.value;
+      random_number.value = payload;
+    });
+
+    is_listening.value = true;
+  } else {
+    document.getElementById("choose_one")?.classList.remove("choosing");
+    if (unlisten_func) {
+      await unlisten_func();
+      unlisten_func = null;
+    }
+    is_listening.value = false;
+  }
+}
+</script>
+
+<template>
+  <nav id="navbar" style="background-color: rgba(255, 255, 255, 0.3)">
+    <div class="nav_container">
+      <a href="" class="logo"><span>随机抽选</span></a>
+      <ul>
+        <li>
+          <a
+            href="https://github.com/zhangxuan2011/RandomChoose"
+            target="_blank"
+            >GitHub仓库</a
+          >
+        </li>
+      </ul>
+    </div>
+  </nav>
+  <main class="container" style="margin-top: 95px">
+    <h1 id="title" style="font-size: 36px">欢迎使用随机抽选</h1>
+    <div class="image">
+      <img src="/icon.png" id="logo" />
+    </div>
+    <div class="mainmsg" style="font-size: 32px">
+      <p>抽中了：{{ random_number }}号</p>
+      <p style="font-size: 16px">
+        (当前抽选范围为{{ min_num }}~{{ max_num }}号)
+      </p>
+    </div>
+    <div class="button">
+      <button @click="toggle_choose" id="choose_one" class="btn">
+        {{ is_listening ? "点此停止抽选" : "点此开始抽选" }}
+      </button>
+    </div>
+    <div class="reserved" style="height: 10px">
+      <!-- For reserved only -->
+    </div>
+  </main>
+</template>
+
+<style scoped>
+/* 导航样式 */
+#navbar {
+  background-color: rgba(255, 255, 255, 0.95); /* 半透明背景 */
+  backdrop-filter: blur(10px); /* 毛玻璃模糊效果 - 核心科技感特效  */
+  position: fixed;
+  width: 100%;
+  top: 0;
+  z-index: 1000;
+  box-shadow: 0 0 15px rgba(0, 161, 214, 0.5); /* 基础发光效果  */
+  border-bottom: 2px solid rgba(0, 161, 214, 0.75); /* 发光底部边框 */
+  transition: all 0.5s ease; /* 平滑过渡效果 */
+  border-radius: 25px;
+  margin-left: -7.5px;
+}
+
+/* 导航栏发光动画 */
+#navbar:hover {
+  box-shadow: 0 0 40px rgba(0, 161, 214, 0.8),
+    /* 主发光层 */ 0 0 50px rgba(0, 100, 255, 0.6); /* 二次光晕层  */
+}
+
+/* 底部流动光效 */
+#navbar::before {
+  content: "";
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  width: 100%;
+  height: 5px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    #00aeec,
+    #ff6699,
+    transparent
+  );
+  background-size: 200% auto;
+  animation: lightFlow 3s linear infinite; /* 流动光效  */
+  -webkit-animation: lightFlow 3s linear infinite;
+  opacity: 0.7;
+  z-index: 1001;
+}
+
+/* 流动光效动画 */
+@keyframes lightFlow {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 200% 50%;
+  }
+}
+
+#navbar .nav_container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  padding-left: 50px;
+  padding-right: 50px;
+  animation: blurToClear 2s ease-in-out;
+}
+
+.logo {
+  text-align: center;
+  font-size: 1.8rem;
+  font-weight: bold;
+  text-decoration: none;
+  color: var(--dark-color);
+}
+
+.logo span {
+  color: #00aeec;
+}
+
+#navbar ul {
+  display: flex;
+  list-style: none;
+}
+
+/* 导航链接发光特效 */
+#navbar ul li a {
+  text-decoration: none;
+  color: black;
+  padding: 10px 15px;
+  transition: all 0.3s;
+  text-shadow: 0 0 5px rgba(0, 0, 0, 0.1); /* 文字微光效果  */
+  position: relative;
+}
+
+#navbar ul li a::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--blue-color),
+    transparent
+  );
+  transition: all 0.3s;
+  transform: translateX(-50%);
+}
+
+#navbar ul li a:hover {
+  color: var(--blue-color);
+  text-shadow: 0 0 10px rgba(0, 161, 214, 0.8); /* 悬停增强发光  */
+}
+
+#navbar ul li a:hover::after {
+  width: 80%; /* 底部流动光效  */
+}
+
+@keyframes blurToClear {
+  0% {
+    filter: blur(10px);
+    -webkit-filter: blur(10px);
+    opacity: 0;
+  }
+  25% {
+    opacity: 1;
+  }
+  100% {
+    filter: blur(0);
+    -webkit-filter: blur(0);
+  }
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  flex-direction: column;
+  border: 3px black;
+  background-color: aliceblue;
+  border-radius: 25px;
+  width: 100%;
+  height: 100%;
+  box-shadow: rgba(0, 0, 0, 0.25) 0 5px 20px;
+  animation: blurToClear 2s ease-in-out;
+}
+
+.btn {
+  margin: 5px;
+  background-color: #00aeec;
+  border-radius: 100px;
+  border-color: #00aeec;
+  font-size: 20px;
+  box-shadow: #00aeec88 0 5px 5px;
+  transition: all 0.3s ease;
+  border-style: solid;
+  color: aliceblue;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-left: 20px;
+  padding-right: 20px;
+  font-weight: bold;
+  border: #00aeec solid 3px;
+}
+
+.choosing {
+  box-shadow: #00aeec 0 5px 25px;
+  background: none;
+  color: #00aeec;
+  border: #00aeec solid 3px;
+  padding-left: 40px;
+  padding-right: 40px;
+}
+
+#logo {
+  height: 70px;
+  border-radius: 10px;
+  box-shadow: #00aeec 0 5px 120px;
+  transition: all 0.5s ease;
+}
+
+#logo:hover {
+  transform: translateY(-5px);
+  box-shadow: #00aeec 0 10px 30px;
+}
+</style>
