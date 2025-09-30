@@ -266,4 +266,13 @@ async function toggle_choose() {
   transform: translateY(-5px);
   box-shadow: #00aeec 0 10px 30px;
 }
+
+/* Apply the font for all elements */
+@font-face {
+  font-family: Genshin;
+  src: url("/font.ttf");
+}
+* {
+  font-family: Genshin;
+}
 </style>
