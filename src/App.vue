@@ -47,7 +47,7 @@ async function toggle_choose() {
 <template>
   <nav id="navbar" style="background-color: rgba(255, 255, 255, 0.3)">
     <div class="nav_container">
-      <a href="" class="logo"><span>随机抽选</span></a>
+      <a class="logo"><span>随机抽选</span></a>
       <ul>
         <li>
           <a
