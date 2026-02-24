@@ -1,16 +1,55 @@
-# Tauri + Vue + TypeScript
+# RandomChoose
 
-This template should help get you started developing with Vue 3 and TypeScript in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+It's been a long time not update this project, because i am too busy (especially i am JH3 student).
 
-## Recommended IDE Setup
+Now this project is updated. it uses the new structure, and its GUI is more pretty than before.
 
-- [VS Code](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) + [Tauri](https://marketplace.visualstudio.com/items?itemName=tauri-apps.tauri-vscode) + [rust-analyzer](https://marketplace.visualstudio.com/items?itemName=rust-lang.rust-analyzer)
+So, please allow me to introduce this project's changes, compare to the previous version:
 
-## Type Support For `.vue` Imports in TS
+## Changed
 
-Since TypeScript cannot handle type information for `.vue` imports, they are shimmed to be a generic Vue component type by default. In most cases this is fine if you don't really care about component prop types outside of templates. However, if you wish to get actual prop types in `.vue` imports (for example to get props validation when using manual `h(...)` calls), you can enable Volar's Take Over mode by following these steps:
+ - Uses [Rust](https://www.rust-lang.org/) to do this project **instead of** Python;
+ - Uses [tauri](https://tauri.app/) to build this project **instead of** PyQt6;
+ - Uses [Vue](https://vuejs.org/) as the frontend framework, and [Rust](https://www.rust-lang.org/) as the backend framework.
 
-1. Run `Extensions: Show Built-in Extensions` from VS Code's command palette, look for `TypeScript and JavaScript Language Features`, then right click and select `Disable (Workspace)`. By default, Take Over mode will enable itself if the default TypeScript extension is disabled.
-2. Reload the VS Code window by running `Developer: Reload Window` from the command palette.
+## New Features
 
-You can learn more about Take Over mode [here](https://github.com/johnsoncodehk/volar/discussions/471).
+ - Uses `stroll-choosing` instead of `one-click-choosing`;
+ - GUI refactor, now it's more pretty than before;
+ - HTML-like, now you can use HTML tags to format your text;
+ - Allow to refresh the page to reset the current page.
+
+## Build
+
+Before building this project, you should install these components on your computer:
+ - Rust (stable is enough);
+ - Node.js (v25.6.1, with `npm`);
+
+After doing these, you can follow these steps to build this project:
+
+ 1. Check your components version:
+ ```bash
+ rustc --version
+ node --version
+ npm --version
+ ```
+
+ 2. Clone this project to your local computer:
+
+ ```bash
+ git clone https://github.com/zhangxuan2011/RandomChoose.git
+ cd RandomChoose
+ git switch withRust
+ ```
+
+ 3. Install the dependencies;
+
+ run this: `npm install`
+
+ 4. Build the project;
+
+ run this: `npm run tauri build`
+
+If you want to run this project without building, you can run this: `npm run tauri dev`
+
+
