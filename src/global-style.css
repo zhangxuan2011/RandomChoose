@@ -72,7 +72,7 @@
 }
 
 .logo span {
-  color: #00aeec;
+  color: #00aeec !important;
 }
 
 #navbar ul {

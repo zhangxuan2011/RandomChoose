@@ -15,9 +15,23 @@ let max_num = ref(50);
 let unlisten_func: UnlistenFn | null = null;
 
 async function toggle_choose() {
+  const btn = document.getElementById("choose_one");
+  if (!btn) { return; }
+
   // To avoid multiple invoking.
-  if (!is_listening.value) {
-    document.getElementById("choose_one")?.classList.add("choosing");
+  if (is_listening.value) {
+    btn?.classList.remove("choosing");
+    await invoke("stop_choose");
+    if (unlisten_func) {
+      unlisten_func();
+      unlisten_func = null;
+    }
+
+    // Reset the state.
+    is_listening.value = false;
+    is_invoked.value = false;
+  } else {
+    btn?.classList.add("choosing");
     if (!is_invoked.value) {
       await invoke("choose_number", {
         min: min_num.value,
@@ -33,13 +47,6 @@ async function toggle_choose() {
     });
 
     is_listening.value = true;
-  } else {
-    document.getElementById("choose_one")?.classList.remove("choosing");
-    if (unlisten_func) {
-      await unlisten_func();
-      unlisten_func = null;
-    }
-    is_listening.value = false;
   }
 }
 </script>
