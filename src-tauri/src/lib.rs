@@ -40,7 +40,6 @@ async fn choose_number(app: tauri::AppHandle, min: i32, max: i32) {
 
 #[tauri::command]
 fn stop_choose() {
-    println!("stop_choose");
     let mut guard = IS_OPENED_THREAD.lock().unwrap();
     *guard = false;
 }
