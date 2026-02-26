@@ -98,6 +98,7 @@ async function toggle_choose() {
   border-radius: 10px;
   box-shadow: #00aeec 0 5px 120px;
   transition: all 0.5s ease;
+  overflow: visible !important;
 }
 
 #logo:hover {

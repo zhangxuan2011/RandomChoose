@@ -11,6 +11,7 @@
   transition: all 0.5s ease; /* 平滑过渡效果 */
   border-radius: 25px;
   margin-left: -7.5px;
+  flex-shrink: 0;
 }
 
 /* 导航栏发光动画 */
@@ -139,7 +140,7 @@
   background-color: aliceblue;
   border-radius: 25px;
   width: 100%;
-  height: 100%;
+  height: 100% !important;
   box-shadow: rgba(0, 0, 0, 0.25) 0 5px 20px;
   animation: blurToClear 2s ease-in-out;
 }
@@ -160,4 +161,32 @@
   padding-right: 20px;
   font-weight: bold;
   border: #00aeec solid 3px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+}
+
+#app {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+@media (prefers-color-scheme: dark) {
+  .btn {
+    background-color: #0077b6;
+    border-color: #0077b6;
+    box-shadow: #0077b688 0 5px 5px;
+  }
+  * {
+    background-color: #222222 !important;
+    color: aliceblue !important;
+  }
 }
