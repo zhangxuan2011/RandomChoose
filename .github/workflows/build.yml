@@ -54,12 +54,6 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Install Linux dependencies
-        if: matrix.platform == 'android'
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y libgtk-3-dev libwebkit2gtk-4.0-dev libappindicator3-dev librsvg2-dev patchelf
-
       - name: Set up JDK 17
         if: matrix.platform == 'android'
         uses: actions/setup-java@v4
@@ -70,10 +64,6 @@ jobs:
       - name: Set up Android SDK
         if: matrix.platform == 'android'
         uses: android-actions/setup-android@v3
-        with:
-          api-level: 34
-          build-tools: 34.0.0
-          ndk: 26.1.10909125
 
       - name: Gradle cache
         if: matrix.platform == 'android'
