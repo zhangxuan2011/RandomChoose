@@ -8,6 +8,24 @@ interface EventPayload {
   remaining_length: number;
 }
 
+// The definition of the config.
+interface ConfigData {
+  essential: ConfigDataEssential,
+  optional: ConfigDataOptional,
+}
+
+interface ConfigDataEssential {
+  min_num: number,
+  max_num: number,
+}
+
+interface ConfigDataOptional {
+  wait_millis: number,
+}
+
+// End of config definition
+// Begin of the basic func definition
+
 let random_number = ref(0);
 let is_listening = ref(false);
 let is_invoked = ref(false);
@@ -27,10 +45,22 @@ watch([min_num, max_num], async () => {
 
 // Init pool when widget mounted
 onMounted(async () => {
-  await invoke("init_random_pool", {
-    min: min_num.value,
-    max: max_num.value,
+  // Start listening
+  let unlisten_fn = await listen<ConfigData>("config", async (event) => {
+    min_num.value = event.payload.essential.min_num;
+    max_num.value = event.payload.essential.max_num;
+
+    await invoke("init_random_pool", {
+      min: min_num.value,
+      max: max_num.value,
+    });
   });
+
+  // Invoke this function then
+  await invoke("get_config")
+
+  // Unlisten immediately
+  unlisten_fn();
 });
 
 async function toggle_choose() {
@@ -52,7 +82,10 @@ async function toggle_choose() {
   } else {
     btn?.classList.add("choosing");
     if (!is_invoked.value) {
-      await invoke("choose_number");
+      await invoke("choose_number", {
+        min: min_num.value,
+        max: max_num.value,
+      });
       is_invoked.value = true;
     }
 
@@ -110,7 +143,7 @@ async function toggle_choose() {
     <div class="licence" style="font-size: 12px;">
       <p>
         Copyright (C) <b>zhangxuan2011</b> 2022-2026, All rights reserved. <br>
-        Frondend design by <b>longlonger2022</b>
+        Frontend design by <b>longlonger2022</b>
       </p>
     </div>
   </main>
@@ -125,19 +158,6 @@ async function toggle_choose() {
   border: #00aeec solid 3px;
   padding-left: 40px;
   padding-right: 40px;
-}
-
-#logo {
-  height: 70px;
-  border-radius: 10px;
-  box-shadow: #00aeec 0 5px 120px;
-  transition: all 0.5s ease;
-  overflow: visible !important;
-}
-
-#logo:hover {
-  transform: translateY(-5px);
-  box-shadow: #00aeec 0 10px 30px;
 }
 
 /* Apply the font for all elements */

@@ -179,6 +179,19 @@ html, body {
   flex-direction: column;
 }
 
+#logo {
+  height: 70px;
+  border-radius: 10px;
+  box-shadow: #00aeec 0 5px 120px;
+  transition: all 0.5s ease;
+  overflow: visible !important;
+}
+
+#logo:hover {
+  transform: translateY(-5px);
+  box-shadow: #00aeec 0 10px 30px;
+}
+
 @media (prefers-color-scheme: dark) {
   .btn {
     background-color: #0077b6;
