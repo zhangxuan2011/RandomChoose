@@ -125,7 +125,6 @@ fn stop_choose() {
 
 /* =====<MAIN APP FUNCTIONS>===== */
 /* =====<SETTINGS APP FUNCTIONS>===== */
-#[cfg(not(target_os = "android"))]
 fn get_config_path(app: AppHandle) -> Result<PathBuf, String> {
     let app_data_dir = app.path().app_data_dir()
         .map_err(|e| {
@@ -139,7 +138,7 @@ fn get_config_path(app: AppHandle) -> Result<PathBuf, String> {
     )?;
 
     // Create the directory of appdata
-    std::fs::create_dir_all(&app_data_dir);
+    let _ = std::fs::create_dir_all(&app_data_dir);
 
     let config_path = app_data_dir.join("config.json");
 
