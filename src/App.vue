@@ -13,7 +13,7 @@ let is_listening = ref(false);
 let is_invoked = ref(false);
 let min_num = ref(1);
 let max_num = ref(50);
-let remaining_length = ref(0);
+let remaining_length = ref(1);
 let unlisten_func: UnlistenFn | null = null;
 
 // Init pool when min/max changed
@@ -106,6 +106,12 @@ async function toggle_choose() {
     </div>
     <div class="reserved" style="height: 10px">
       <!-- For reserved only -->
+    </div>
+    <div class="licence" style="font-size: 12px;">
+      <p>
+        Copyright (C) <b>zhangxuan2011</b> 2022-2026, All rights reserved. <br>
+        Frondend design by <b>longlonger2022</b>
+      </p>
     </div>
   </main>
 </template>
