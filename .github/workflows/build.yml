@@ -5,6 +5,9 @@ on:
     tags:
       - "v*"
 
+permissions:
+  contents: write
+
 jobs:
   build:
     name: Build ${{ matrix.platform }}
@@ -20,7 +23,6 @@ jobs:
             artifacts: |
               src-tauri/target/release/bundle/msi/*.msi
               src-tauri/target/release/bundle/nsis/*.exe
-              src-tauri/target/release/bundle/zip/*.zip
 
           - platform: android
             os: ubuntu-latest
