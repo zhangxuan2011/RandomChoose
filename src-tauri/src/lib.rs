@@ -1,6 +1,7 @@
+use directories::UserDirs;
 use rand::seq::SliceRandom;
 use serde::{Deserialize, Serialize};
-use std::{fs::read_to_string, sync::Mutex};
+use std::{fs::read_to_string, path::PathBuf, sync::Mutex};
 use tauri::{AppHandle, Emitter};
 use tauri_plugin_dialog::{DialogExt, MessageDialogButtons, MessageDialogKind};
 use tokio::time::{sleep, Duration};
@@ -124,10 +125,43 @@ fn stop_choose() {
 
 /* =====<MAIN APP FUNCTIONS>===== */
 /* =====<SETTINGS APP FUNCTIONS>===== */
+fn get_config_path() -> Result<PathBuf, String> {
+        let user_dirs = UserDirs::new()
+        .ok_or("无法获取用户目录")
+        .map_err(|e| {
+            app.dialog()
+                .message("在查找用户目录时出现错误")
+                .title("无法读取配置文件")
+                .kind(MessageDialogKind::Error)
+                .blocking_show();
+            String::from("LocateUserDirError")
+        }
+    )?;
+
+    let document_dir = user_dirs.document_dir()
+        .ok_or("无法获取用户文档目录")
+        .map_err(|e| {
+            app.dialog()
+                .message("在查找用户文档目录时出现错误")
+                .title("无法读取配置文件")
+                .kind(MessageDialogKind::Error)
+                .blocking_show();
+            String::from("LocateUserDocumentDirError")
+        }
+    )?;
+
+    let config_path = document_dir.join("config.json");
+
+    Ok(config_path)
+}
+
+
 #[tauri::command]
 async fn get_config(app: AppHandle) -> Result<(), String> {
+    let config_path = get_config_path()?;
+
     // The default config file is at `config.json`
-    let config_raw = read_to_string("config.json")
+    let config_raw = read_to_string(&config_path)
         .map_err(|e| format!("Failed to read the config data: {}", e))?;
 
     // Parse the configuration
@@ -141,6 +175,8 @@ async fn get_config(app: AppHandle) -> Result<(), String> {
 
 #[tauri::command]
 async fn write_config(app: AppHandle, config: ConfigData) -> Result<(), String> {
+    let config_path = get_config_path()?;
+
     // Deserialize it to string
     let config_raw = serde_json::to_string(&config)
         .map_err(|e| {
@@ -155,7 +191,7 @@ async fn write_config(app: AppHandle, config: ConfigData) -> Result<(), String> 
         })?;
 
     // Write to file
-    std::fs::write("config.json", config_raw)
+    std::fs::write(&config_path, config_raw)
         .map_err(|e| {
             let message = format!("Failed to write configuration file to config file: {}", e);
             app.dialog()
