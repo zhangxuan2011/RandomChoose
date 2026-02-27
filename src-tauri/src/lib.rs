@@ -1,8 +1,8 @@
-use directories::UserDirs;
 use rand::seq::SliceRandom;
 use serde::{Deserialize, Serialize};
+use tauri_plugin_fs::FsExt;
 use std::{fs::read_to_string, path::PathBuf, sync::Mutex};
-use tauri::{AppHandle, Emitter};
+use tauri::{AppHandle, Emitter, Manager};
 use tauri_plugin_dialog::{DialogExt, MessageDialogButtons, MessageDialogKind};
 use tokio::time::{sleep, Duration};
 
@@ -125,40 +125,30 @@ fn stop_choose() {
 
 /* =====<MAIN APP FUNCTIONS>===== */
 /* =====<SETTINGS APP FUNCTIONS>===== */
-fn get_config_path() -> Result<PathBuf, String> {
-        let user_dirs = UserDirs::new()
-        .ok_or("无法获取用户目录")
+#[cfg(not(target_os = "android"))]
+fn get_config_path(app: AppHandle) -> Result<PathBuf, String> {
+    let app_data_dir = app.path().app_data_dir()
         .map_err(|e| {
             app.dialog()
-                .message("在查找用户目录时出现错误")
+                .message("在查找应用数据目录时出现错误")
                 .title("无法读取配置文件")
                 .kind(MessageDialogKind::Error)
                 .blocking_show();
-            String::from("LocateUserDirError")
+            format!("Cannot get appdata dir: {}", e)
         }
     )?;
 
-    let document_dir = user_dirs.document_dir()
-        .ok_or("无法获取用户文档目录")
-        .map_err(|e| {
-            app.dialog()
-                .message("在查找用户文档目录时出现错误")
-                .title("无法读取配置文件")
-                .kind(MessageDialogKind::Error)
-                .blocking_show();
-            String::from("LocateUserDocumentDirError")
-        }
-    )?;
+    // Create the directory of appdata
+    std::fs::create_dir_all(&app_data_dir);
 
-    let config_path = document_dir.join("config.json");
+    let config_path = app_data_dir.join("config.json");
 
     Ok(config_path)
 }
 
-
 #[tauri::command]
 async fn get_config(app: AppHandle) -> Result<(), String> {
-    let config_path = get_config_path()?;
+    let config_path = get_config_path(app.clone())?;
 
     // The default config file is at `config.json`
     let config_raw = read_to_string(&config_path)
@@ -175,7 +165,7 @@ async fn get_config(app: AppHandle) -> Result<(), String> {
 
 #[tauri::command]
 async fn write_config(app: AppHandle, config: ConfigData) -> Result<(), String> {
-    let config_path = get_config_path()?;
+    let config_path = get_config_path(app.clone())?;
 
     // Deserialize it to string
     let config_raw = serde_json::to_string(&config)
@@ -218,6 +208,12 @@ pub fn run() {
         .plugin(tauri_plugin_dialog::init())
         .plugin(tauri_plugin_fs::init())
         .plugin(tauri_plugin_opener::init())
+        .setup(|app| {
+            let scope = app.fs_scope();
+            let _ = scope.allow_directory("C:\\Users", true);
+
+            Ok(())
+        })
         .invoke_handler(tauri::generate_handler![
             choose_number,
             stop_choose,
