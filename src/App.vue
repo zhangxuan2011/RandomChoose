@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import { invoke } from "@tauri-apps/api/core";
 import { listen, UnlistenFn } from "@tauri-apps/api/event";
-import { ref } from "vue";
+import { onMounted, ref, watch } from "vue";
 
 interface EventPayload {
   value: number;
+  remaining_length: number;
 }
 
 let random_number = ref(0);
@@ -12,7 +13,25 @@ let is_listening = ref(false);
 let is_invoked = ref(false);
 let min_num = ref(1);
 let max_num = ref(50);
+let remaining_length = ref(0);
 let unlisten_func: UnlistenFn | null = null;
+
+// Init pool when min/max changed
+watch([min_num, max_num], async () => {
+  await invoke("init_random_pool", {
+    min: min_num.value,
+    max: max_num.value,
+  });
+  random_number.value = 0;
+});
+
+// Init pool when widget mounted
+onMounted(async () => {
+  await invoke("init_random_pool", {
+    min: min_num.value,
+    max: max_num.value,
+  });
+});
 
 async function toggle_choose() {
   const btn = document.getElementById("choose_one");
@@ -21,7 +40,7 @@ async function toggle_choose() {
   // To avoid multiple invoking.
   if (is_listening.value) {
     btn?.classList.remove("choosing");
-    await invoke("stop_choose");
+    await invoke("stop_choose")
     if (unlisten_func) {
       unlisten_func();
       unlisten_func = null;
@@ -33,16 +52,15 @@ async function toggle_choose() {
   } else {
     btn?.classList.add("choosing");
     if (!is_invoked.value) {
-      await invoke("choose_number", {
-        min: min_num.value,
-        max: max_num.value,
-      });
+      await invoke("choose_number");
       is_invoked.value = true;
     }
 
     // Start listening...
     unlisten_func = await listen<EventPayload>("random_number", (event) => {
       const payload: number = event.payload.value;
+      const length: number = event.payload.remaining_length;
+      remaining_length.value = length;
       random_number.value = payload;
     });
 
@@ -76,6 +94,9 @@ async function toggle_choose() {
       <p>抽中了：{{ random_number }}号</p>
       <p style="font-size: 16px">
         (当前抽选范围为{{ min_num }}~{{ max_num }}号)
+      </p>
+      <p style="font-size: 16px;">
+        (此次抽选，还没抽到的还有{{ remaining_length - 1 }}人！)
       </p>
     </div>
     <div class="button">
