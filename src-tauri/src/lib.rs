@@ -190,7 +190,7 @@ async fn write_config(app: AppHandle, config: ConfigData) -> Result<(), String> 
             .buttons(MessageDialogButtons::Ok)
             .kind(MessageDialogKind::Error)
             .blocking_show();
-        return String::from("minnum larger than maxnum");
+        return Err(String::from("minnum larger than maxnum"));
     }
 
     // Write to file
