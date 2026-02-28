@@ -179,6 +179,20 @@ async fn write_config(app: AppHandle, config: ConfigData) -> Result<(), String> 
             message
         })?;
 
+    // Pre-check
+    let min_num = &config.essential.min_num;
+    let max_num = &config.essential.max_num;
+
+    if min_num > max_num {
+        app.dialog()
+            .message("最小值不能大于最大值！\n请重新设置最小值和最大值！")
+            .title("无法写入配置文件")
+            .buttons(MessageDialogButtons::Ok)
+            .kind(MessageDialogKind::Error)
+            .blocking_show();
+        return String::from("minnum larger than maxnum");
+    }
+
     // Write to file
     std::fs::write(&config_path, config_raw)
         .map_err(|e| {
