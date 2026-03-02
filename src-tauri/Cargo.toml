@@ -1,6 +1,6 @@
 [package]
 name = "RandomChoose"
-version = "5.1.0"
+version = "5.1.1"
 description = "The Random Choose program."
 authors = ["zhangxuan2011", "longlonger2022"]
 edition = "2021"
