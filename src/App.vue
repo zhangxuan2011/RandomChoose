@@ -32,6 +32,7 @@ let is_invoked = ref(false);
 let min_num = ref(1);
 let max_num = ref(50);
 let remaining_length = ref(1);
+let wait_millis = ref(5);
 let unlisten_func: UnlistenFn | null = null;
 
 // Init pool when min/max changed
@@ -49,6 +50,7 @@ onMounted(async () => {
   let unlisten_fn = await listen<ConfigData>("config", async (event) => {
     min_num.value = event.payload.essential.min_num;
     max_num.value = event.payload.essential.max_num;
+    wait_millis.value = event.payload.optional?.wait_millis ?? 5;	// Default use 5
 
     await invoke("init_random_pool", {
       min: min_num.value,
@@ -85,6 +87,7 @@ async function toggle_choose() {
       await invoke("choose_number", {
         min: min_num.value,
         max: max_num.value,
+	waitMillis: wait_millis.value,
       });
       is_invoked.value = true;
     }

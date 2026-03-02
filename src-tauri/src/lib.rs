@@ -27,7 +27,7 @@ struct ConfigDataEssential {
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
 struct ConfigDataOptional {
-    pub wait_millis: Option<u32>,
+    pub wait_millis: Option<u64>,
 }
 
 /// To describe is the thread has opened
@@ -66,7 +66,7 @@ fn init_random_pool(app: AppHandle, min: i32, max: i32) {
 
 // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
 #[tauri::command]
-async fn choose_number(app: AppHandle, min: i32, max: i32) {
+async fn choose_number(app: AppHandle, min: i32, max: i32, wait_millis: u64) {
     let mut guard = IS_OPENED_THREAD.lock().unwrap();
     if *guard {
         return;
@@ -112,7 +112,7 @@ async fn choose_number(app: AppHandle, min: i32, max: i32) {
                 )
             };
 
-            sleep(Duration::from_millis(5)).await;
+            sleep(Duration::from_millis(wait_millis)).await;
         }
     });
 }
