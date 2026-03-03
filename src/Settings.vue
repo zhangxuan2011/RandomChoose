@@ -16,14 +16,14 @@ interface ConfigDataEssential {
 }
 
 interface ConfigDataOptional {
-  wait_millis: number | null,
+  wait_millis: number,
 }
 
 // End of config definition
 // The definition of some essential arguments
 let min_num = ref(0);
 let max_num = ref(100)
-let wait_millis = ref<number | null>(5)
+let wait_millis = ref(5)
 let config_data = ref<ConfigData | undefined>()
 
 // Automatically get the config
@@ -50,8 +50,13 @@ async function apply_changes() {
   });
   if (!answer) { return; }
 
+  // If wait_millis is empty, then use 5 as the default value.
+  if (typeof wait_millis.value !== "number") {
+    wait_millis.value = 5 // Default = 5
+  }
+
   // Check the current value's type
-  if (typeof min_num.value !== "number" || typeof max_num.value !== "number" || typeof wait_millis.value !== "number") {
+  if (typeof min_num.value !== "number" || typeof max_num.value !== "number") {
     await message("请输入正确的数值！")
   }
 
@@ -67,7 +72,7 @@ async function apply_changes() {
   };
 
   // Invoke the func to write to config file
-  await invoke("write_config", { config: config_data.value })
+  await invoke("write_config", { config: config_data.value }).then((msg) => {console.log(msg)})
 }
 </script>
 
@@ -103,12 +108,11 @@ async function apply_changes() {
         <input v-model="max_num" type="number" class="global-input" />
       </div>
       <h2 class="titie">可选设置项</h2>
-      <p>注意：以下项目，如不想填，应当填0</p>
     </div>
     <div class="settings" id="optional-settings">
       <div class="option">
         <p class="prompt">数据更新间隔：</p>
-        <input v-model="wait_millis" type="number" class="global-input" />
+        <input v-model="wait_millis" type="number" class="global-input" placeholder="5"/>
         <p>ms</p>
       </div>
     </div>
