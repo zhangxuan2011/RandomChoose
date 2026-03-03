@@ -87,7 +87,7 @@ async function toggle_choose() {
       await invoke("choose_number", {
         min: min_num.value,
         max: max_num.value,
-	waitMillis: wait_millis.value,
+	      waitMillis: wait_millis.value,
       });
       is_invoked.value = true;
     }

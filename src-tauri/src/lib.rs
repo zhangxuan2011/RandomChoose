@@ -1,9 +1,9 @@
-use rand::seq::SliceRandom;
+use rand::prelude::*;
 use serde::{Deserialize, Serialize};
-use tauri_plugin_fs::FsExt;
 use std::{fs::read_to_string, path::PathBuf, sync::Mutex};
 use tauri::{AppHandle, Emitter, Manager};
 use tauri_plugin_dialog::{DialogExt, MessageDialogButtons, MessageDialogKind};
+use tauri_plugin_fs::FsExt;
 use tokio::time::{sleep, Duration};
 
 /* =====<BASIC DATA>===== */
@@ -42,7 +42,9 @@ fn init_random_pool(app: AppHandle, min: i32, max: i32) {
     if min >= max {
         // min >= max is not allowed
         app.dialog()
-            .message("最小值不可以大于最大值!\n请前往 设置 -> 基础设置项检查并修改最小值至最大值以下。")
+            .message(
+                "最小值不可以大于最大值!\n请前往 设置 -> 基础设置项检查并修改最小值至最大值以下。",
+            )
             .title("无法初始化程序 (critical)")
             .buttons(MessageDialogButtons::Ok)
             .kind(MessageDialogKind::Error)
@@ -51,11 +53,11 @@ fn init_random_pool(app: AppHandle, min: i32, max: i32) {
     }
 
     let mut random_pool = RANDOM_POOL.lock().unwrap();
-    *random_pool = (min..=max).collect::<Vec<_>>();
+    random_pool.clear();
 
-    if random_pool.is_empty() {
+    if !random_pool.is_empty() {
         app.dialog()
-            .message("随机数池储存的值为空，这通常是配置文件未正确配置导致的。")
+            .message("随机数池储存的值非空，这通常是配置文件未正确配置导致的。")
             .title("无法初始化程序 (critical)")
             .buttons(MessageDialogButtons::Ok)
             .kind(MessageDialogKind::Error)
@@ -76,41 +78,51 @@ async fn choose_number(app: AppHandle, min: i32, max: i32, wait_millis: u64) {
 
     tauri::async_runtime::spawn(async move {
         loop {
-            // Check is stopped
             let running = *IS_OPENED_THREAD.lock().unwrap();
-            if !running {
-                let mut pool = RANDOM_POOL.lock().unwrap();
-                println!("Not running, current pool: {:?}", pool);
-                if !pool.is_empty() {
-                    let last = pool.pop().unwrap();
-                    println!("停止，移除: {}，剩余: {}", last, pool.len());
-                }
-                break;
-            }
 
-            let val = {
+            let (val, should_emit, should_break) = {
                 let mut pool = RANDOM_POOL.lock().unwrap();
-                if pool.is_empty() {
+                let total = (max - min + 1) as usize;
+                if pool.len() >= total {
                     // Re-initialize the random pool
                     println!("重新初始化随机数池");
-                    *pool = (min..=max).collect::<Vec<_>>();
+                    pool.clear();
                 }
-                println!("Running, current pool: {:?}", pool);
-                pool.shuffle(&mut rand::rng());
-                let v = pool[pool.len() - 1];
-                v // Lock released here
+                let v = rand::rng().random_range(min..=max);
+                println!("Running, current pool: {:?}, num: {}", pool, v);
+
+                // Check is the value contains in the pool
+                if !running {
+                    println!("Not running, current pool: {:?}, num: {}", pool, v);
+
+                    if pool.contains(&v) {
+                        println!("The number {v} has chosen, re-choosing...");
+                        (v, false, true)
+                    } else {
+                        pool.push(v);
+                        println!("Not exist in pool, performing push {} and break...", v);
+                        (v, true, true)
+                    }
+                } else {
+                    (v, true, false)
+                }
             };
 
-            let _ = {
-                let pool = RANDOM_POOL.lock().unwrap();
-                app.emit(
-                    "random_number",
-                    EventPayload {
-                        value: val,
-                        remaining_length: pool.len(),
-                    },
-                )
-            };
+            println!("Got val {val}");
+
+            if should_emit {
+                let _ = {
+                    let pool = RANDOM_POOL.lock().unwrap();
+                    app.emit(
+                        "random_number",
+                        EventPayload {
+                            value: val,
+                            remaining_length: pool.len(),
+                        },
+                    )
+                };
+                if should_break { break; }
+            }
 
             sleep(Duration::from_millis(wait_millis)).await;
         }
@@ -126,16 +138,14 @@ fn stop_choose() {
 /* =====<MAIN APP FUNCTIONS>===== */
 /* =====<SETTINGS APP FUNCTIONS>===== */
 fn get_config_path(app: AppHandle) -> Result<PathBuf, String> {
-    let app_data_dir = app.path().app_data_dir()
-        .map_err(|e| {
-            app.dialog()
-                .message("在查找应用数据目录时出现错误")
-                .title("无法读取配置文件")
-                .kind(MessageDialogKind::Error)
-                .blocking_show();
-            format!("Cannot get appdata dir: {}", e)
-        }
-    )?;
+    let app_data_dir = app.path().app_data_dir().map_err(|e| {
+        app.dialog()
+            .message("在查找应用数据目录时出现错误")
+            .title("无法读取配置文件")
+            .kind(MessageDialogKind::Error)
+            .blocking_show();
+        format!("Cannot get appdata dir: {}", e)
+    })?;
 
     // Create the directory of appdata
     let _ = std::fs::create_dir_all(&app_data_dir);
@@ -167,17 +177,16 @@ async fn write_config(app: AppHandle, config: ConfigData) -> Result<(), String> 
     let config_path = get_config_path(app.clone())?;
 
     // Deserialize it to string
-    let config_raw = serde_json::to_string(&config)
-        .map_err(|e| {
-            let message = format!("Could not deserialize the config: {}", e);
-            app.dialog()
-                .message(message.clone())
-                .title("写入配置文件失败 (critical)")
-                .buttons(MessageDialogButtons::Ok)
-                .kind(MessageDialogKind::Error)
-                .blocking_show();
-            message
-        })?;
+    let config_raw = serde_json::to_string(&config).map_err(|e| {
+        let message = format!("Could not deserialize the config: {}", e);
+        app.dialog()
+            .message(message.clone())
+            .title("写入配置文件失败 (critical)")
+            .buttons(MessageDialogButtons::Ok)
+            .kind(MessageDialogKind::Error)
+            .blocking_show();
+        message
+    })?;
 
     // Pre-check
     let min_num = &config.essential.min_num;
@@ -194,17 +203,16 @@ async fn write_config(app: AppHandle, config: ConfigData) -> Result<(), String> 
     }
 
     // Write to file
-    std::fs::write(&config_path, config_raw)
-        .map_err(|e| {
-            let message = format!("Failed to write configuration file to config file: {}", e);
-            app.dialog()
-                .message(message.clone())
-                .title("写入配置文件失败 (critical)")
-                .buttons(MessageDialogButtons::Ok)
-                .kind(MessageDialogKind::Error)
-                .blocking_show();
-            message
-        })?;
+    std::fs::write(&config_path, config_raw).map_err(|e| {
+        let message = format!("Failed to write configuration file to config file: {}", e);
+        app.dialog()
+            .message(message.clone())
+            .title("写入配置文件失败 (critical)")
+            .buttons(MessageDialogButtons::Ok)
+            .kind(MessageDialogKind::Error)
+            .blocking_show();
+        message
+    })?;
 
     app.dialog()
         .message("成功写入了配置文件！")

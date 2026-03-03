@@ -112,7 +112,7 @@ async function apply_changes() {
     <div class="settings" id="optional-settings">
       <div class="option">
         <p class="prompt">数据更新间隔：</p>
-        <input v-model="wait_millis" type="number" class="global-input" placeholder="5"/>
+        <input v-model="wait_millis" type="number" class="global-input" placeholder="5" min="0"/>
         <p>ms</p>
       </div>
     </div>
