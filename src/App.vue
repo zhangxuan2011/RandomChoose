@@ -131,7 +131,7 @@ async function toggle_choose() {
       </ul>
     </div>
   </nav>
-  <main class="container" style="margin-top: 95px">
+  <main class="container">
     <h1 id="title" style="font-size: 36px">欢迎使用随机抽选</h1>
     <div class="image">
       <img src="/icon.png" id="logo" />
