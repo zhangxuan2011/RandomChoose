@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { invoke } from "@tauri-apps/api/core";
 import { listen, UnlistenFn } from "@tauri-apps/api/event";
-import { onMounted, ref, watch } from "vue";
+import { onMounted, onUnmounted, ref, watch } from "vue";
 
 interface EventPayload {
   value: number;
@@ -10,17 +10,17 @@ interface EventPayload {
 
 // The definition of the config.
 interface ConfigData {
-  essential: ConfigDataEssential,
-  optional: ConfigDataOptional,
+  essential: ConfigDataEssential;
+  optional: ConfigDataOptional;
 }
 
 interface ConfigDataEssential {
-  min_num: number,
-  max_num: number,
+  min_num: number;
+  max_num: number;
 }
 
 interface ConfigDataOptional {
-  wait_millis: number,
+  wait_millis: number;
 }
 
 // End of config definition
@@ -46,11 +46,12 @@ watch([min_num, max_num], async () => {
 
 // Init pool when widget mounted
 onMounted(async () => {
+  /* Stage 1: Load config */
   // Start listening
   let unlisten_fn = await listen<ConfigData>("config", async (event) => {
     min_num.value = event.payload.essential.min_num;
     max_num.value = event.payload.essential.max_num;
-    wait_millis.value = event.payload.optional?.wait_millis ?? 5;	// Default use 5
+    wait_millis.value = event.payload.optional?.wait_millis ?? 5; // Default use 5 if not specified
 
     await invoke("init_random_pool", {
       min: min_num.value,
@@ -59,24 +60,41 @@ onMounted(async () => {
   });
 
   // Invoke this function then
-  await invoke("get_config")
+  await invoke("get_config");
 
-  // Unlisten immediately
+  // Unlisten config immediately
   unlisten_fn();
+
+  /* Stage 2: Start listening number */
+  unlisten_func = await listen<EventPayload>("random_number", (event) => {
+    const payload: number = event.payload.value;
+    const length: number = event.payload.remaining_length;
+    remaining_length.value = length;
+    random_number.value = payload;
+  });
+});
+
+onUnmounted(async () => {
+  // Stop choosing (end that thread)
+  invoke("stop_choose");
+
+  // Stop listening
+  if (unlisten_func) {
+    unlisten_func();
+    unlisten_func = null;
+  }
 });
 
 async function toggle_choose() {
   const btn = document.getElementById("choose_one");
-  if (!btn) { return; }
+  if (!btn) {
+    return;
+  }
 
   // To avoid multiple invoking.
   if (is_listening.value) {
     btn?.classList.remove("choosing");
-    await invoke("stop_choose")
-    if (unlisten_func) {
-      unlisten_func();
-      unlisten_func = null;
-    }
+    await invoke("stop_choose");
 
     // Reset the state.
     is_listening.value = false;
@@ -87,18 +105,10 @@ async function toggle_choose() {
       await invoke("choose_number", {
         min: min_num.value,
         max: max_num.value,
-	      waitMillis: wait_millis.value,
+        waitMillis: wait_millis.value,
       });
       is_invoked.value = true;
     }
-
-    // Start listening...
-    unlisten_func = await listen<EventPayload>("random_number", (event) => {
-      const payload: number = event.payload.value;
-      const length: number = event.payload.remaining_length;
-      remaining_length.value = length;
-      random_number.value = payload;
-    });
 
     is_listening.value = true;
   }
@@ -131,7 +141,7 @@ async function toggle_choose() {
       <p style="font-size: 16px">
         (当前抽选范围为{{ min_num }}~{{ max_num }}号)
       </p>
-      <p style="font-size: 16px;">
+      <p style="font-size: 16px">
         (此次抽选，还没抽到的还有{{ remaining_length - 1 }}人！)
       </p>
     </div>
@@ -143,9 +153,10 @@ async function toggle_choose() {
     <div class="reserved" style="height: 10px">
       <!-- For reserved only -->
     </div>
-    <div class="licence" style="font-size: 12px;">
+    <div class="licence" style="font-size: 12px">
       <p>
-        Copyright (C) <b>zhangxuan2011</b> 2022-2026, All rights reserved. <br>
+        Copyright (C) <b>zhangxuan2011</b> 2022-2026, All rights reserved.
+        <br />
         Frontend design by <b>longlonger2022</b>
       </p>
     </div>

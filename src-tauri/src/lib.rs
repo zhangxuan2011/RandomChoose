@@ -108,8 +108,6 @@ async fn choose_number(app: AppHandle, min: i32, max: i32, wait_millis: u64) {
                 }
             };
 
-            println!("Got val {val}");
-
             if should_emit {
                 let _ = {
                     let pool = RANDOM_POOL.lock().unwrap();
@@ -117,7 +115,7 @@ async fn choose_number(app: AppHandle, min: i32, max: i32, wait_millis: u64) {
                         "random_number",
                         EventPayload {
                             value: val,
-                            remaining_length: pool.len(),
+                            remaining_length: (max as usize) - pool.len(),
                         },
                     )
                 };
