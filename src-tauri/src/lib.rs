@@ -79,10 +79,10 @@ async fn choose_number(app: AppHandle, min: i32, max: i32, wait_millis: u64) {
     tauri::async_runtime::spawn(async move {
         loop {
             let running = *IS_OPENED_THREAD.lock().unwrap();
+            let total = (max - min + 1) as usize;
 
             let (val, should_emit, should_break) = {
                 let mut pool = RANDOM_POOL.lock().unwrap();
-                let total = (max - min + 1) as usize;
                 if pool.len() >= total {
                     // Re-initialize the random pool
                     println!("重新初始化随机数池");
@@ -115,7 +115,7 @@ async fn choose_number(app: AppHandle, min: i32, max: i32, wait_millis: u64) {
                         "random_number",
                         EventPayload {
                             value: val,
-                            remaining_length: (max as usize) - pool.len(),
+                            remaining_length: total - pool.len(),
                         },
                     )
                 };
