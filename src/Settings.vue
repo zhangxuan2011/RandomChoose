@@ -157,6 +157,7 @@ async function apply_changes() {
           class="global-input"
           placeholder="5"
           min="0"
+          max="1000"
         />
         <p>ms</p>
       </div>
