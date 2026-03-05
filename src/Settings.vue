@@ -57,7 +57,21 @@ async function apply_changes() {
 
   // Check the current value's type
   if (typeof min_num.value !== "number" || typeof max_num.value !== "number") {
-    await message("请输入正确的数值！")
+    await message("请输入正确的数值！", { title: "错误", kind: "error" });
+    return;
+  }
+
+  // Check the option's number is valid
+  // Check min/max is overflow
+  if (min_num.value < -2147483648 || min_num.value > 2147483647 || max_num.value < -2147483648 || max_num.value > 2147483647) {
+    await message("无效的最小/最大范围取值（不能超过i32范围大小）！", { title: "错误", kind: "error" });
+    return;
+  }
+
+  // Check the wait_millis
+  if (wait_millis.value < 0 ) {
+    await message("数据更新间隔不能小于0！", { title: "错误", kind: "error" });
+    return;
   }
 
   // Make it as the interface
@@ -101,11 +115,11 @@ async function apply_changes() {
       <h2 class="title">基本设置项</h2>
       <div class="option">
         <p class="prompt">最小抽选取值：</p>
-        <input v-model="min_num" class="global-input" type="number" />
+        <input v-model="min_num" class="global-input" type="number" min="-2147483648" />
       </div>
       <div class="option" style="margin-top: 5px;">
         <p class="prompt">最大抽选取值：</p>
-        <input v-model="max_num" type="number" class="global-input" />
+        <input v-model="max_num" type="number" class="global-input" max="2147483647"/>
       </div>
       <h2 class="titie">可选设置项</h2>
     </div>
