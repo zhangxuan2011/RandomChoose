@@ -142,7 +142,7 @@ async function toggle_choose() {
         (当前抽选范围为{{ min_num }}~{{ max_num }}号)
       </p>
       <p style="font-size: 16px">
-        (此次抽选，还没抽到的还有{{ remaining_length - 1 }}人！)
+        (此次抽选，还没抽到的还有{{ remaining_length }}人！)
       </p>
     </div>
     <div class="button">

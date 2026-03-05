@@ -39,7 +39,7 @@ static RANDOM_POOL: Mutex<Vec<i32>> = Mutex::new(Vec::new());
 
 #[tauri::command]
 fn init_random_pool(app: AppHandle, min: i32, max: i32) {
-    if min >= max {
+    if min > max {
         // min >= max is not allowed
         app.dialog()
             .message(
